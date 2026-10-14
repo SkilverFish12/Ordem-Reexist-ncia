@@ -45,6 +45,7 @@ document.addEventListener('keydown',function(e){
 /* ---------- 3) CSS do visual (entra depois do CSS da página) ---------- */
 var CSS="\n/* base */\nhtml[data-pal] body{font-family:var(--f-b)}\nhtml[data-pal] .vdado,html[data-pal] .vdado svg{display:block}\n.vdado{display:inline-block;vertical-align:middle;flex:none;width:26px;height:26px}\n.vdado svg{width:100%;height:100%;overflow:visible}\n.vdado .f{fill:currentColor;stroke:currentColor;stroke-width:2;stroke-linejoin:round}\n.vdado text{fill:var(--card);font:700 9.5px var(--f-n);text-anchor:middle}\n:focus-visible{outline:2px solid var(--focus);outline-offset:2px}\n/* t\u00edtulos e r\u00f3tulos no estilo novo */\nbody.vr h1{font:400 clamp(30px,4.4vw,52px)/1.05 var(--f-d);letter-spacing:-.01em}\nbody.vr h2{font-family:var(--f-d);font-weight:400;text-transform:none;letter-spacing:0}\nbody.vr:not(.vr-m) h2{font-size:1.2rem;color:var(--ink)}\nbody.vr:not(.vr-m) label{text-transform:none;letter-spacing:0;font-size:.85rem}\nbody.vr:not(.vr-m) .cond label{font-size:.9rem}\nbody.vr .topbar{border-bottom:2px solid var(--ink);padding-bottom:14px}\nbody.vr .sub{color:var(--muted)}\n/* pain\u00e9is com a quina cortada, como a face de um dado */\nbody.vr:not(.vr-m) .card,body.vr .oc,body.vr .itm,body.vr .mal,body.vr .rit{\n  --cut:16px;border-radius:0;\n  clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,0 100%);\n  background-image:linear-gradient(to top right,transparent calc(50% - .75px),var(--line) calc(50% - .75px),var(--line) calc(50% + .75px),transparent calc(50% + .75px));\n  background-repeat:no-repeat;background-position:top right;background-size:var(--cut) var(--cut)}\nbody.vr.vr-m .oc,body.vr.vr-m .itm,body.vr.vr-m .mal,body.vr.vr-m .rit{--cut:12px}\n/* bot\u00f5es no estilo da pr\u00e9via */\nbody.vr button,body.vr select{font-family:var(--f-b)}\n/* cores dos elementos seguem a paleta */\n.mal.conh,.dot.conh,.elem.conh{--el:var(--conh)}\n.mal.ener,.dot.ener,.elem.ener{--el:var(--ener)}\n.mal.morte,.dot.morte,.elem.morte{--el:var(--morte)}\n.mal.sangue,.dot.sangue,.elem.sangue{--el:var(--sangue)}\n.mal.medo,.dot.medo,.elem.medo{--el:var(--medo)}\n/* manual: o bot\u00e3o de tema antigo sai, o seletor de paletas o substitui */\nbody.vr .tema{display:none!important}\n/* r\u00e9gua de dados */\n.regua{display:flex;align-items:end;gap:6px;margin:10px 0 4px;color:var(--ink)}\n.regua .vdado{opacity:.28}.regua .vdado.at{opacity:1;color:var(--teal)}\n/* trilho \u00e0 esquerda no computador, barra embaixo no celular */\nbody.vr{padding-left:96px}body.vr.vr-m{padding-left:112px}\n.vrail{position:fixed;left:0;top:0;bottom:0;width:96px;z-index:40;display:flex;flex-direction:column;align-items:center;gap:10px;padding:22px 0;background:var(--rail-bg);color:var(--rail-fg);font-family:var(--f-b)}\nhtml[data-theme=\"dark\"] .vrail{border-right:1px solid var(--line)}\n.vrail .marca{font:400 13px/1.1 var(--f-d);text-align:center;margin-bottom:12px;padding:0 6px;color:inherit;text-decoration:none}\n.vrail .vb{display:flex;flex-direction:column;align-items:center;gap:4px;width:76px;padding:10px 0 8px;border-radius:10px;font:500 12.5px var(--f-b);color:color-mix(in srgb,var(--rail-fg) 62%,transparent);text-decoration:none}\n.vrail .vb .vdado{width:42px;height:42px}\n.vrail .vb:hover{color:var(--rail-fg)}\n.vrail .vb[aria-current=\"page\"]{color:var(--rail-fg);background:color-mix(in srgb,var(--rail-fg) 14%,transparent)}\n.vrail .vb[aria-current=\"page\"] .vdado .f{fill:var(--rail-fg);stroke:var(--rail-fg)}\n.vrail .vb[aria-current=\"page\"] .vdado text{fill:var(--rail-bg)}\n.vrail .vb .vdado{transition:transform .5s cubic-bezier(.3,1.4,.5,1)}\n.vrail .vb:hover .vdado{transform:rotate(18deg)}\n.vrail .fim{margin-top:auto;display:flex;flex-direction:column;gap:8px;align-items:center}\n.vrail .vtema{font:500 11.5px var(--f-b);border:1px solid color-mix(in srgb,var(--rail-fg) 35%,transparent);border-radius:14px;padding:4px 10px;cursor:pointer;background:none;color:var(--rail-fg)}\n.vrail kbd{font:500 10.5px var(--f-n);opacity:.6}\n.vrail .nomepal{font:500 11px/1.2 var(--f-b);opacity:.7;text-align:center;max-width:84px}\n.vpop{position:fixed;left:106px;bottom:18px;width:330px;max-height:calc(100vh - 36px);overflow:auto;background:var(--line);padding:1px;z-index:45;display:none;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);color:var(--ink);font-family:var(--f-b);font-size:16px}\n.vpop.on{display:block}\n.vpop>.in{background:var(--card);padding:14px 14px 10px;clip-path:polygon(0 0,calc(100% - 15.5px) 0,100% 15.5px,100% 100%,0 100%)}\nbody.vr .vpop h3{font:400 19px var(--f-d);margin:0 0 2px;color:var(--ink);text-transform:none;letter-spacing:0}\n.vpop .sub{font-size:13px;color:var(--muted);margin:0 0 6px}\n.vpop .grupo{font:600 12px var(--f-b);color:var(--muted);margin:12px 0 4px;text-transform:uppercase;letter-spacing:.07em}\n.vpop .opt{all:unset;box-sizing:border-box;display:grid;grid-template-columns:auto minmax(0,1fr);gap:11px;align-items:center;width:100%;padding:7px 8px;cursor:pointer;border-radius:6px}\n.vpop .opt:hover{background:var(--teal-soft)}\n.vpop .opt:focus-visible{outline:2px solid var(--focus);outline-offset:1px}\n.vpop .opt[aria-checked=\"true\"]{box-shadow:inset 0 0 0 2px var(--teal)}\n.vpop .chips{display:flex;width:62px;height:30px;border:1px solid var(--line);overflow:hidden}\n.vpop .chips i{flex:1}\n.vpop .opt b{font:600 15px/1.2 var(--f-b);display:block;color:var(--ink)}\n.vpop .opt small{display:block;color:var(--muted);font-size:12.5px;line-height:1.3}\n@media(max-width:760px){\n  body.vr,body.vr.vr-m{padding-left:0;padding-bottom:88px}\n  body.vr.vr-m{padding-left:16px}\n  .vrail{top:auto;right:0;width:auto;flex-direction:row;justify-content:center;gap:6px;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}\n  .vrail .marca,.vrail kbd,.vrail .nomepal{display:none}.vrail .fim{margin:0 0 0 6px}\n  .vrail .vb{width:78px}.vrail .vb .vdado{width:30px;height:30px}\n  .vpop{left:8px;right:8px;width:auto;bottom:calc(86px + env(safe-area-inset-bottom,0px));max-height:calc(100vh - 110px)}\n}\n@media print{.vrail,.vpop,.regua{display:none!important}body.vr,body.vr.vr-m{padding-left:0!important}\n  body.vr .card,body.vr .oc,body.vr .itm,body.vr .mal,body.vr .rit{clip-path:none;background-image:none}}\n";
 
+var CSS2="\n/* ===== blocos do modelo: atributos como dados, barras de PV/Sanidade/PE, escada de NH ===== */\n.vtiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:6px 0 10px}\n@media(max-width:520px){.vtiles{grid-template-columns:repeat(2,1fr)}}\n.vtile{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:8px 0;margin:0!important;cursor:pointer;min-width:0}\n.vtile .vtd{display:block;width:78px;height:78px;color:var(--ink)}\n.vtile .vtd svg{display:block;width:100%;height:100%;overflow:visible}\n.vtile .vtd .f{fill:currentColor;stroke:currentColor;stroke-width:2;stroke-linejoin:round}\n.vtile .vtd .f.o{fill:none}\n.vtile .vtd text{fill:var(--card);font:700 9.5px var(--f-n);text-anchor:middle}\n.vtile .vtd .f.o+text{fill:var(--muted)}\n.vtile>b{font:400 17px var(--f-d);color:var(--ink)}\n.vtile>span.vtc{font-size:13.5px;color:var(--muted);line-height:1.35}\n.vtile select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0}\n.vtile:focus-within{outline:2px solid var(--focus);outline-offset:2px}\n.vtile label{display:none!important}\n.vtile:hover .vtd{transform:rotate(10deg)}.vtile .vtd{transition:transform .3s}\n.vvit{display:grid;gap:14px;margin:4px 0 14px}\n.vvit .l{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px}\n.vvit .l b{font:400 17px var(--f-d);color:var(--ink)}.vvit .l span{font:700 16px var(--f-n);color:var(--ink)}\n.vcasas{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;height:16px}\n.vcasas i{background:var(--line);clip-path:polygon(0 0,100% 0,calc(100% - 4px) 100%,0 100%)}\n.vcasas i.v{background:var(--c)}\n.vvit .pv{--c:var(--sangue)}.vvit .san{--c:var(--ener)}.vvit .pe{--c:var(--conh)}\n.vnhcard{position:relative}\n.vnhcard .field{position:absolute;inset:0;margin:0;opacity:0}\n.vnhcard .field label{display:none}\n.vnhcard .field select{width:100%;height:100%;cursor:pointer}\n.vnhcard:focus-within{outline:2px solid var(--focus);outline-offset:-2px}\n.vnhn{display:flex;align-items:baseline;gap:12px}\n.vnhn b{font:400 44px/1 var(--f-d);color:var(--sangue)}\n.vnhn span{font:400 21px var(--f-d);color:var(--ink)}\n.vnh{display:flex;align-items:end;gap:5px;height:56px;margin:6px 0}\n.vnh i{flex:1;background:var(--line);height:var(--h)}\n.vnh i.v{background:var(--sangue)}\n.vnhcard p.vdica{margin:6px 0 0;color:var(--muted);font-size:15px}\n/* campos grandes em mono (Presen\u00e7a Perturbadora e Pontos de Vida da amea\u00e7a) */\n.vbig .grid{gap:10px}\n.vbig .field{display:flex;flex-direction:column-reverse;border-top:3px solid var(--ink);padding-top:6px;margin:0}\n.vbig .field label{font-size:13.5px;color:var(--muted);margin:0}\n.vbig .field input,.vbig .field select{font:700 26px/1.1 var(--f-n);border:0;padding:0;color:var(--ink);background:transparent}\n/* manual: tabelas, notas e r\u00f3tulos como na pr\u00e9via */\nbody.vr-m th{font:600 14px var(--f-b);letter-spacing:0;text-transform:none;color:var(--muted);border-bottom:2px solid var(--ink)}\nbody.vr-m td.m,body.vr-m th.m{font-family:var(--f-n)}\nbody.vr-m .nota{border-left:5px solid var(--teal);border-radius:0;background:var(--teal-soft)}\nbody.vr-m .cap-eyebrow{font:600 15px var(--f-b);letter-spacing:0;text-transform:none;color:var(--muted)}\nbody.vr-m nav.toc .cn{letter-spacing:0;text-transform:none}\nbody.vr-m h1{padding-bottom:12px;border-bottom:2px solid var(--ink);margin-bottom:6px}\n";
 /* ---------- 4) montagem ---------- */
 var SH={
  4:'<polygon class="f" points="12,4 20.5,19 3.5,19"/><text x="12" y="17" style="font-size:8.5px">4</text>',
@@ -55,7 +56,7 @@ var SH={
  20:'<polygon class="f" points="12,2.5 20.5,7.2 20.5,16.8 12,21.5 3.5,16.8 3.5,7.2"/><text x="12" y="15.2" style="font-size:9.5px">20</text>'};
 function dado(n,w){return '<span class="vdado" role="img" aria-label="d'+n+'"'+(w?' style="width:'+w+'px;height:'+w+'px"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+SH[n]+'</svg></span>';}
 function montar(){
-  var st=document.createElement('style');st.id='visual-css';st.textContent=CSS;document.head.appendChild(st);
+  var st=document.createElement('style');st.id='visual-css';st.textContent=CSS+CSS2;document.head.appendChild(st);
   var b=document.body;b.classList.add('vr');
   if(document.querySelector('.capitulo'))b.classList.add('vr-m');
   /* trilho */
@@ -91,7 +92,69 @@ function montar(){
   nomepal.textContent=pega(atual).nome;lista();
   /* página inicial: três dados grandes */
   var ini=document.getElementById('inicio-dados');
+  try{melhorar();}catch(e){try{console.error(e);}catch(x){}}
   if(ini)ini.innerHTML=PAGS.map(function(p){return '<a class="big" href="'+p.u+'">'+dado(p.d)+'<strong>'+p.n+'</strong><span>'+({'Fichas':'Ficha de personagem interativa, com várias fichas salvas.','Manual':'Regras, especializações, poderes, rituais, itens e ameaças.','Ameaças':'Fichas de criaturas, com rolagem de ataques.'})[p.n]+'</span><kbd>Alt+'+p.k+'</kbd></a>';}).join('');
 }
+
+/* ---------- 5) blocos do modelo (iguais aos da prévia) ---------- */
+function melhorar(){
+  var NOMES=['Inquietante','Sombrio','Perturbador','Corrosivo','Aterrador','Macabro','Pavoroso','Aterrorizante','Apocalíptico','Cataclísmico / Relíquia'];
+  var $=function(q,r){return (r||document).querySelector(q);};
+  var upd=[];
+  function dieSvg(n){
+    if(n&&SH[n])return '<svg viewBox="0 0 24 24" aria-hidden="true">'+SH[n]+'</svg>';
+    return '<svg viewBox="0 0 24 24" aria-hidden="true"><polygon class="f o" points="12,3 21,12 12,21 3,12"/><text x="12" y="15.3" style="font-size:10px">?</text></svg>';
+  }
+  var cardOf=function(el){return el?el.closest('.card'):null;};
+  /* ---- FICHA: atributos como dados, barras de vida ---- */
+  var sf=$('select[data-k="fisico"]');
+  if(sf&&$('input[data-k="pv_atual"]')){
+    var grid=sf.closest('.grid');grid.classList.add('vtiles');grid.removeAttribute('style');
+    var info={fisico:['Físico','PV e carga'],presteza:['Presteza',''],mente:['Mente','pontos de perícia'],espirito:['Espírito','PE']};
+    ['fisico','presteza','mente','espirito'].forEach(function(k){
+      var sel=$('select[data-k="'+k+'"]'),f=sel.closest('.field');f.classList.add('vtile');
+      sel.setAttribute('aria-label',info[k][0]);
+      var d=document.createElement('span');d.className='vtd';var nm=document.createElement('b');nm.textContent=info[k][0];var cp=document.createElement('span');cp.className='vtc';
+      f.insertBefore(cp,f.firstChild);f.insertBefore(nm,f.firstChild);f.insertBefore(d,f.firstChild);
+      upd.push(function(){var n=parseInt((sel.value||'').replace(/\D/g,''),10)||0;var h=dieSvg(n);if(d.dataset.n!==String(n)){d.innerHTML=h;d.dataset.n=String(n);}
+        var t=n?('valor '+n):'escolha o dado';
+        if(k==='presteza'){var de=$('input[data-k="deslocamento"]');if(n&&de&&de.value)t+='<br>deslocamento '+de.value+' m';}else if(info[k][1]&&n)t+='<br>'+info[k][1];
+        if(cp.dataset.t!==t){cp.innerHTML=t;cp.dataset.t=t;}});
+    });
+    var box=$('.pv-pd');
+    if(box){
+      var vit=document.createElement('div');vit.className='vvit';
+      var defs=[['pv','Pontos de vida','pv_atual','pv_max'],['san','Sanidade','san_atual','san_max'],['pe','Pontos de esforço','pd_atual','pd_max']];
+      defs.forEach(function(x){
+        var w=document.createElement('div');w.className=x[0];w.innerHTML='<div class="l"><b>'+x[1]+'</b><span></span></div><div class="vcasas"></div>';vit.appendChild(w);
+        var a=$('input[data-k="'+x[2]+'"]'),m=$('input[data-k="'+x[3]+'"]'),sp=$('span',w),cs=$('.vcasas',w);
+        upd.push(function(){var cur=parseFloat(a.value),max=parseFloat(m.value);cur=isNaN(cur)?0:cur;max=isNaN(max)?0:max;
+          var n=max>0?Math.min(Math.round(max),24):12;var fill=max>0?Math.max(0,Math.min(n,Math.round(Math.min(cur,max)/max*n))):0;
+          var key=cur+'/'+max+'/'+n+'/'+fill;if(cs.dataset.k===key)return;cs.dataset.k=key;
+          sp.textContent=(a.value===''?'—':a.value)+' / '+(m.value===''?'—':m.value);
+          var h='';for(var i=0;i<n;i++)h+='<i'+(i<fill?' class="v"':'')+'></i>';cs.innerHTML=h;});
+      });
+      box.parentNode.insertBefore(vit,box);
+    }
+  }
+  /* ---- AMEAÇA: Nível de Horror em escada, números grandes ---- */
+  var snh=$('select[data-k="nivel"]'),cols=$('.cols');
+  if(snh&&cols){
+    var fld=snh.closest('.field');
+    var card=document.createElement('div');card.className='card vnhcard';
+    card.innerHTML='<h2>Nível de Horror</h2><div class="vnhn"><b></b><span></span></div><div class="vnh"></div><p class="vdica">Quanto mais alto o degrau, mais a criatura muda o rumo da cena. Toque para trocar.</p>';
+    card.appendChild(fld);cols.insertBefore(card,cols.firstChild);
+    var nb=$('.vnhn b',card),ns=$('.vnhn span',card),lad=$('.vnh',card);
+    var h='';for(var i=1;i<=10;i++)h+='<i style="--h:'+(18+i*3.8)+'px"></i>';lad.innerHTML=h;var is=[].slice.call(lad.children);
+    upd.push(function(){var v=parseInt(snh.value,10)||0;var k=String(v);if(card.dataset.k===k)return;card.dataset.k=k;nb.textContent=v||'—';ns.textContent=v?NOMES[v-1]:'escolha o nível';is.forEach(function(e,j){e.className=j<v?'v':'';});});
+    [].slice.call(document.querySelectorAll('.card h2')).forEach(function(h2){
+      var t=h2.textContent.trim();
+      if(t==='Presença Perturbadora'||t==='Pontos de Vida')h2.closest('.card').classList.add('vbig');});
+  }
+  function tudo(){upd.forEach(function(f){try{f();}catch(e){}});}
+  tudo();setInterval(tudo,400);
+  document.addEventListener('input',tudo);document.addEventListener('change',tudo);
+}
+
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',montar);else montar();
 })();
