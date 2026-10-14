@@ -61,6 +61,15 @@ textarea{resize:vertical;min-height:44px;border:1px solid var(--line);border-rad
 .modal-actions{display:flex;justify-content:flex-end}
 footer{color:var(--dim);font-size:.75rem;text-align:center;margin-top:24px}
 @media print{.log,.atk{display:none!important}.pd{display:block}body{background:#fff;color:#000}.card{border:1px solid #999;break-inside:avoid}.noprint,.addbtn,.item button{display:none}select,input,textarea{border-color:#999!important}}
+/* layout largo: tela cheia sem espaços vazios (só em telas grandes; no celular e na impressão fica como era) */
+@media screen and (min-width:1100px){
+  .wrap{max-width:none;padding:14px 22px 40px}
+  .cols{column-count:3;column-gap:14px}
+  .cols>.grid{display:contents}
+  .cols .card{break-inside:avoid;margin-bottom:14px}
+  .cols .g5,.cols .g4{grid-template-columns:repeat(2,1fr)}
+}
+@media screen and (min-width:2000px){.cols{column-count:4}}
 /* ícones de dado (estilo do playtest) */
 .dado{display:inline-block;width:1.5em;height:1.5em;vertical-align:-.38em;margin-inline:.04em;color:var(--ink)}
 .dado svg{display:block;width:100%;height:100%;overflow:visible}
@@ -98,6 +107,7 @@ select.dsel option{color:var(--ink);background:var(--panel)}
     <div class="sub">Como usar: escreva dados e números separados por + (ex.: 3d6 + 2) e aperte Enter ou Rolar. RA é o maior dado e RB o menor dado do último ataque rolado na ficha. Insira-os com os botões + RA, + RB ou + RA + RB, ou digite (ex.: 4d6 + RA + RB). Sem ataque rolado antes, RA e RB valem 0.</div>
   </div>
 
+  <div class="cols">
   <div class="card">
     <div class="grid g5">
       <div class="field"><label>Nome da ameaça</label><input type="text" data-k="nome"></div>
@@ -179,6 +189,7 @@ select.dsel option{color:var(--ink);background:var(--panel)}
   <div class="card">
     <h2><input type="text" data-k="enigT" style="color:var(--accent);font-size:.95rem;border:none" aria-label="Título da seção"></h2>
     <textarea data-k="enig" placeholder="Como a ameaça age e como derrotá-la…"></textarea>
+  </div>
   </div>
   <footer>As alterações ficam salvas neste navegador.</footer>
 </div>
