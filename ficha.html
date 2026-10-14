@@ -245,26 +245,27 @@ select.dsel option{color:var(--ink);background:var(--panel)}
   <!-- IDENTIDADE -->
   <div class="card idcard" style="margin-bottom:14px">
     <div class="grid g4">
-      <div class="field"><label>Nome</label><input type="text" data-k="nome"></div>
-      <div class="field"><label>Perfil</label>
+      <div class="field s3"><label>Nome</label><input type="text" data-k="nome"></div>
+      <div class="field s2"><label>Perfil</label>
         <select data-k="perfil"><option></option><option>Executor</option><option>Analista</option><option>Vigilante</option></select>
       </div>
-      <div class="field"><label>Ocupação</label>
+      <div class="field s3"><label>Ocupação</label>
         <select id="ocupSel"></select>
         <input type="text" data-k="ocupacao" id="ocupTxt" placeholder="Nome da Ocupação" style="display:none">
       </div>
-      <div class="field"><label>2ª Ocupação (NT7)</label>
+      <div class="field s4"><label>2ª Ocupação (NT7)</label>
         <select id="ocup2Sel"></select>
         <input type="text" data-k="ocupacao2" id="ocup2Txt" placeholder="Nome da Ocupação" style="display:none">
       </div>
     </div>
     <div id="ocupInfo" class="recinfo-line" style="display:none;margin:-2px 0 10px;line-height:1.5"></div>
-    <div class="grid g3">
-      <div class="field"><label>NT</label><input type="number" min="1" max="10" data-k="nt"></div>
-      <div class="field"><label>NEX %</label><input type="number" min="0" max="99" step="10" data-k="nex"></div>
-      <div class="field"><label>Elemento de Afinidade</label><input type="text" data-k="elemento"></div>
+    <div class="grid g3 idrow2">
+      <div class="field s2"><label>NT</label><input type="number" min="1" max="10" data-k="nt"></div>
+      <div class="field s2"><label>NEX %</label><input type="number" min="0" max="99" step="10" data-k="nex"></div>
+      <div class="field nivelf s3"><label>Nível (NT + NEX)</label><input type="text" id="nivelCalc" readonly style="opacity:.8"></div>
+      <div class="field s2"><label>Elemento de Afinidade</label><select data-k="elemento" class="velsel"><option></option><option>Conhecimento</option><option>Energia</option><option>Morte</option><option>Sangue</option><option>Medo</option></select></div>
+      <div class="field s3"><label>Aspecto</label><select data-k="aspecto" class="velsel vasp"><option></option><optgroup label="Sangue"><option>Faminto</option><option>Furioso</option><option>Sensível</option></optgroup><optgroup label="Morte"><option>Antipático</option><option>Anacrônico</option><option>Decrépito</option></optgroup><optgroup label="Conhecimento"><option>Vidente</option><option>Erudito</option><option>Revelador</option></optgroup><optgroup label="Energia"><option>Instável</option><option>Catalisador</option><option>Caótico</option></optgroup><optgroup label="Medo"><option>Impossível</option></optgroup></select></div>
     </div>
-    <div class="field nivelf" style="max-width:260px"><label>Nível (NT + NEX)</label><input type="text" id="nivelCalc" readonly style="opacity:.8"></div>
   </div>
 
   <div class="grid g2 row2" style="margin-bottom:14px">
