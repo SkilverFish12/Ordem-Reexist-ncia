@@ -269,6 +269,7 @@ select.dsel option{color:var(--ink);background:var(--panel)}
   </div>
 
   <div class="grid g2 row2" style="margin-bottom:14px">
+    <div class="statcol">
     <div class="card">
       <h2>Atributos</h2>
       <div class="grid" style="grid-template-columns:repeat(2,1fr)">
@@ -301,10 +302,7 @@ select.dsel option{color:var(--ink);background:var(--panel)}
         <button type="button" onclick="aplicarBasePVPD()" style="font-size:.72rem">Usar base automática</button>
       </div>
       <div style="font-size:.7rem;color:var(--dim);margin-top:4px">Os campos Máx ficam livres para edição — some aqui o bônus de habilidades (Calejado, Corpo Resiliente, Sangue de Ferro...) ou efeitos temporários de ritual. Poderes e rituais de Medo custam 4 de Sanidade máxima permanente: desconte aqui.</div>
-      <div class="field" style="margin-top:10px"><label>Carga (Atual — soma automática / Máx — auto pelo dado de Físico)</label>
-        <div class="row"><input type="number" data-k="carga_atual" readonly style="opacity:.75"><input type="number" data-k="carga_max" readonly style="opacity:.75"></div>
-        <div id="cargaAviso" style="font-size:.72rem;color:var(--accent);margin-top:4px"></div>
-      </div>
+    </div>
     </div>
   <!-- PERÍCIAS -->
   <div class="card" id="cardPericias">
@@ -438,7 +436,14 @@ select.dsel option{color:var(--ink);background:var(--panel)}
   </div>
 
   <div class="card" id="cardCargaTot" style="margin-bottom:14px">
-    <div style="font-size:.85rem">Carga total (Bolsos + Vestidos + itens dentro dos Recipientes): <strong id="cargaTotal">0</strong></div>
+    <h2>Carga</h2>
+    <div class="vcarga">
+      <div class="cg"><label>Carga atual</label><input type="number" data-k="carga_atual" readonly></div>
+      <span class="sep">/</span>
+      <div class="cg"><label>Carga máxima</label><input type="number" data-k="carga_max" readonly></div>
+      <div class="cgn">Atual = Bolsos + Vestidos + itens dentro dos Recipientes (soma automática). Máxima = pelo dado de Físico.<strong id="cargaTotal" hidden>0</strong></div>
+    </div>
+    <div id="cargaAviso" style="font-size:.78rem;color:var(--accent);margin-top:6px"></div>
   </div>
     <div class="pagfoot noprint"><button type="button" onclick="irPagina(2)">← Anterior</button><span style="color:var(--dim);font-size:.75rem">Página 3 de 5</span><button type="button" onclick="irPagina(4)">Próxima →</button></div>
   </section>
