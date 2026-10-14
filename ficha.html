@@ -305,7 +305,15 @@ select.dsel option{color:var(--ink);background:var(--panel)}
         <div id="cargaAviso" style="font-size:.72rem;color:var(--accent);margin-top:4px"></div>
       </div>
     </div>
-    <div class="card" id="cardResProf">
+  <!-- PERÍCIAS -->
+  <div class="card" id="cardPericias">
+    <h2>Perícias</h2>
+    <div style="font-size:.78rem;color:var(--dim);margin-bottom:8px">Pontos de perícia: <strong id="periciaGastos">0</strong> gastos de <strong id="periciaDisponivel">0</strong> disponíveis <span id="periciaBreak"></span> (d4=0 · d6=1 · d8=2 · d10=3 · d12=4 — não é bloqueado, só um guia). Cada perícia tem um atributo-base, mas o Mestre pode pedir outro atributo conforme a situação (veja Rolagem Rápida).</div>
+    <div class="periciasgrid" id="periciasGrupos"></div>
+  </div>
+  </div>
+
+    <div class="card" id="cardResProf" style="margin-bottom:14px">
       <h2>Resistências &amp; Proficiências</h2>
       <div class="field resfield"><label>Resistências</label>
         <textarea data-k="resistencias" placeholder="Ex.: Balístico 3, Fogo 6, Medo 3..." style="min-height:60px"></textarea>
@@ -324,14 +332,7 @@ select.dsel option{color:var(--ink);background:var(--panel)}
         <div style="font-size:.68rem;color:var(--dim);margin-top:4px">Cada proficiência extra custa 2 pontos de perícia. Sem proficiência: −1 passo em ataque por graduação faltando (em Proteção, em qualquer teste de Físico).</div>
       </div>
     </div>
-  </div>
 
-  <!-- PERÍCIAS -->
-  <div class="card" style="margin-bottom:14px">
-    <h2>Perícias</h2>
-    <div style="font-size:.78rem;color:var(--dim);margin-bottom:8px">Pontos de perícia: <strong id="periciaGastos">0</strong> gastos de <strong id="periciaDisponivel">0</strong> disponíveis <span id="periciaBreak"></span> (d4=0 · d6=1 · d8=2 · d10=3 · d12=4 — não é bloqueado, só um guia). Cada perícia tem um atributo-base, mas o Mestre pode pedir outro atributo conforme a situação (veja Rolagem Rápida).</div>
-    <div class="periciasgrid" id="periciasGrupos"></div>
-  </div>
     <div class="pagfoot noprint"><span></span><span style="color:var(--dim);font-size:.75rem">Página 1 de 5</span><button type="button" onclick="irPagina(2)">Próxima →</button></div>
   </section>
 
