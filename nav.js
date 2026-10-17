@@ -34,8 +34,20 @@ document.head.appendChild(sv);aplica(atual,false);
 var fl=document.createElement('link');fl.rel='stylesheet';fl.href='https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Young+Serif&family=JetBrains+Mono:wght@500;700&display=swap';document.head.appendChild(fl);
 
 /* ---------- 2) atalhos de teclado ---------- */
-var PAGS=[{k:'1',n:'Fichas',u:'ficha.html',d:6},{k:'2',n:'Manual',u:'manual.html',d:12},{k:'3',n:'Ameaças',u:'ameaca.html',d:20}];
+var PAGS=[
+ {k:'1',n:'Regras',u:'manual.html#cap1',d:4,cap:1,t:'Regras Básicas: testes, passos de dado, cenas de ação, investigação, perseguição, furtividade e interlúdio.'},
+ {k:'2',n:'Personagem',u:'manual.html#cap2',d:6,cap:2,t:'Criação de personagem: Ocupação e Perfil.'},
+ {k:'3',n:'Evolução',u:'manual.html#cap3',d:8,cap:3,t:'Evolução, especializações, poderes paranormais e rituais.'},
+ {k:'4',n:'Itens',u:'manual.html#cap7',d:10,cap:7,t:'Itens, armas, proteções, modificações e maldições.'},
+ {k:'5',n:'Ameaças',u:'ameaca.html',d:12,t:'Criação de criaturas e fichas de ameaça, com rolagem de ataques.'},
+ {k:'6',n:'Fichas',u:'ficha.html',d:20,t:'Ficha de personagem interativa, com várias fichas salvas.'}];
+var PARTE={1:4,2:6,3:8,4:8,5:8,6:8,7:10,8:10,9:12};
 var arq=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+/* toda visita nova (aba ou sessão nova) começa pela capa */
+try{
+  if(arq!=='index.html'&&!sessionStorage.getItem('op-entrou')){sessionStorage.setItem('op-entrou','1');location.replace('index.html');return;}
+  sessionStorage.setItem('op-entrou','1');
+}catch(e){}
 document.addEventListener('keydown',function(e){
   if(!e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)return;
   if(e.key==='0'){e.preventDefault();location.href='index.html';return;}
@@ -63,16 +75,22 @@ function montar(){
   /* trilho */
   var nav=document.createElement('nav');nav.className='vrail';nav.setAttribute('aria-label','Partes do site');
   var h='<a class="marca" href="index.html" title="Início (Alt+0)">Ordem<br>Paranormal<br>Reexistência</a>';
-  PAGS.forEach(function(p){h+='<a class="vb" href="'+p.u+'"'+(arq===p.u?' aria-current="page"':'')+' title="Alt+'+p.k+'">'+dado(p.d)+p.n+'</a>';});
-  h+='<div class="fim"><button type="button" class="vtema" id="vtema" aria-haspopup="true" aria-expanded="false" title="Trocar paleta (Alt+P)">Paletas</button><span class="nomepal" id="nomepal"></span><kbd>Alt+1 2 3 · P</kbd></div>';
+  PAGS.forEach(function(p){h+='<a class="vb" href="'+p.u+'" data-d="'+p.d+'"'+(arq===p.u?' aria-current="page"':'')+' title="Alt+'+p.k+' · d'+p.d+'">'+dado(p.d)+p.n+'</a>';});
+  h+='<div class="fim"><button type="button" class="vtema" id="vtema" aria-haspopup="true" aria-expanded="false" title="Trocar paleta (Alt+P)">Paletas</button><span class="nomepal" id="nomepal"></span><kbd>Alt+1 a 6 · P</kbd></div>';
   nav.innerHTML=h;b.appendChild(nav);
+  if(document.querySelector('.capitulo')){
+    var marca=function(){var c=document.querySelector('.capitulo:not([hidden])'),d=c?PARTE[c.getAttribute('data-cap')]:0;
+      [].forEach.call(nav.querySelectorAll('.vb'),function(a){if(a.getAttribute('href').indexOf('manual.html')===0){if(+a.dataset.d===d)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');}});};
+    marca();setInterval(marca,300);
+  }
   var pop=document.createElement('div');pop.className='vpop';pop.id='vpop';pop.setAttribute('role','dialog');pop.setAttribute('aria-label','Escolher paleta');
   pop.innerHTML='<div class="in"><h3>Paletas</h3><p class="sub">'+PALETAS.length+' opções. A escolha vale para o site todo e fica salva neste navegador.</p><div id="vlista"></div></div>';
   b.appendChild(pop);
   /* régua de dados sob o título da página */
-  var d=(PAGS.filter(function(p){return p.u===arq;})[0]||{}).d;
-  if(d){[].slice.call(document.querySelectorAll('h1')).forEach(function(h1){
+  var d0=(PAGS.filter(function(p){return p.u===arq;})[0]||{}).d;
+  if(d0||document.querySelector('.capitulo')){[].slice.call(document.querySelectorAll('h1')).forEach(function(h1){
     if(h1.closest('header.capa')||h1.classList.contains('titulo'))return;
+    var cp=h1.closest('.capitulo'),d=cp?PARTE[cp.getAttribute('data-cap')]:d0;if(!d)return;
     var r=document.createElement('div');r.className='regua';r.setAttribute('aria-hidden','true');
     [4,6,8,10,12,20].forEach(function(n,i){var s=dado(n,16+i*4);r.insertAdjacentHTML('beforeend',s.replace('class="vdado"','class="vdado'+(n===d?' at':'')+'"'));});
     h1.insertAdjacentElement('afterend',r);});}
@@ -94,7 +112,7 @@ function montar(){
   /* página inicial: três dados grandes */
   var ini=document.getElementById('inicio-dados');
   try{melhorar();}catch(e){try{console.error(e);}catch(x){}}
-  if(ini)ini.innerHTML=PAGS.map(function(p){return '<a class="big" href="'+p.u+'">'+dado(p.d)+'<strong>'+p.n+'</strong><span>'+({'Fichas':'Ficha de personagem interativa, com várias fichas salvas.','Manual':'Regras, especializações, poderes, rituais, itens e ameaças.','Ameaças':'Fichas de criaturas, com rolagem de ataques.'})[p.n]+'</span><kbd>Alt+'+p.k+'</kbd></a>';}).join('');
+  if(ini)ini.innerHTML=PAGS.map(function(p){return '<a class="big" href="'+p.u+'">'+dado(p.d)+'<strong>'+p.n+'</strong><span>'+p.t+'</span><kbd>Alt+'+p.k+'</kbd></a>';}).join('');
 }
 
 /* ---------- 5) blocos do modelo (iguais aos da prévia) ---------- */
