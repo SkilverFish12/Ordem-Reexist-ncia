@@ -36,10 +36,10 @@ var fl=document.createElement('link');fl.rel='stylesheet';fl.href='https://fonts
 /* ---------- 2) atalhos de teclado ---------- */
 var PAGS=[
  {k:'1',n:'Regras',u:'manual.html#cap1',d:4,cap:1,t:'Regras Básicas: testes, passos de dado, cenas de ação, investigação, perseguição, furtividade e interlúdio.'},
- {k:'2',n:'Personagem',u:'manual.html#cap2',d:6,cap:2,t:'Criação de personagem: Ocupação e Perfil.'},
+ {k:'2',n:'Personagem',u:'manual.html#cap2',d:6,cap:2,t:'Atributos, Status, Perícias, Ocupação e Perfil.'},
  {k:'3',n:'Evolução',u:'manual.html#cap3',d:8,cap:3,t:'Evolução, especializações, poderes paranormais e rituais.'},
- {k:'4',n:'Itens',u:'manual.html#cap7',d:10,cap:7,t:'Itens, armas, proteções, modificações e maldições.'},
- {k:'5',n:'Ameaças',u:'ameaca.html',d:12,t:'Criação de criaturas e fichas de ameaça, com rolagem de ataques.'},
+ {k:'4',n:'Equipamentos',u:'manual.html#cap7',d:10,cap:7,t:'Inventário, armas, proteções, modificações e maldições.'},
+ {k:'5',n:'Ameaças',u:'manual.html#cap9',ex:'ameaca.html',d:12,cap:9,t:'Criação de criaturas e de humanos, arquétipos prontos e a ficha de ameaça.'},
  {k:'6',n:'Fichas',u:'ficha.html',d:20,t:'Ficha de personagem interativa, com várias fichas salvas.'}];
 var PARTE={1:4,2:6,3:8,4:8,5:8,6:8,7:10,8:10,9:12};
 var arq=(location.pathname.split('/').pop()||'index.html').toLowerCase();
@@ -75,7 +75,7 @@ function montar(){
   /* trilho */
   var nav=document.createElement('nav');nav.className='vrail';nav.setAttribute('aria-label','Partes do site');
   var h='<a class="marca" href="index.html" title="Início (Alt+0)">Ordem<br>Paranormal<br>Reexistência</a>';
-  PAGS.forEach(function(p){h+='<a class="vb" href="'+p.u+'" data-d="'+p.d+'"'+(arq===p.u?' aria-current="page"':'')+' title="Alt+'+p.k+' · d'+p.d+'">'+dado(p.d)+p.n+'</a>';});
+  PAGS.forEach(function(p){h+='<a class="vb" href="'+p.u+'" data-d="'+p.d+'"'+((arq===p.u||arq===p.ex)?' aria-current="page"':'')+' title="Alt+'+p.k+' · d'+p.d+'">'+dado(p.d)+p.n+'</a>';});
   h+='<div class="fim"><button type="button" class="vtema" id="vtema" aria-haspopup="true" aria-expanded="false" title="Trocar paleta (Alt+P)">Paletas</button><span class="nomepal" id="nomepal"></span><kbd>Alt+1 a 6 · P</kbd></div>';
   nav.innerHTML=h;b.appendChild(nav);
   if(document.querySelector('.capitulo')){
@@ -87,7 +87,7 @@ function montar(){
   pop.innerHTML='<div class="in"><h3>Paletas</h3><p class="sub">'+PALETAS.length+' opções. A escolha vale para o site todo e fica salva neste navegador.</p><div id="vlista"></div></div>';
   b.appendChild(pop);
   /* régua de dados sob o título da página */
-  var d0=(PAGS.filter(function(p){return p.u===arq;})[0]||{}).d;
+  var d0=(PAGS.filter(function(p){return p.u===arq||p.ex===arq;})[0]||{}).d;
   if(d0||document.querySelector('.capitulo')){[].slice.call(document.querySelectorAll('h1')).forEach(function(h1){
     if(h1.closest('header.capa')||h1.classList.contains('titulo'))return;
     var cp=h1.closest('.capitulo'),d=cp?PARTE[cp.getAttribute('data-cap')]:d0;if(!d)return;
@@ -342,7 +342,7 @@ function melhorar(){
         if(c){if(r.dataset.c!==c)r.dataset.c=c;}else if(r.dataset.c)r.removeAttribute('data-c');});});});
   }
   /* ---- MANUAL: d20 marca o que é importante ou dica ---- */
-  var toc=$('nav.toc');
+  var toc=$('nav.guias')||$('nav.toc');
   if(toc){
     var d20='<span class="vd20i" aria-hidden="true"><svg viewBox="0 0 24 24">'+SH[20]+'<text x="12" y="14.6">20</text></svg></span>';
     [].forEach.call(document.querySelectorAll('.nota'),function(n){
