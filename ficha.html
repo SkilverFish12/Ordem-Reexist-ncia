@@ -199,6 +199,23 @@ select.dsel option{color:var(--ink);background:var(--panel)}
   .dado{color:#000}
   .dado text{fill:#fff}
 }
+
+/* ---- contador de munição ---- */
+.munbox{flex:1 1 100%;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:2px 0 4px;padding:8px 10px;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:4px;background:var(--bg,transparent)}
+.munbox .mlab{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim)}
+.munbox select{flex:0 0 auto;max-width:150px}
+.munbox .vstp input{font-size:20px!important}
+.munbox .vstp input.vmx{font-size:15px!important}
+.munbox .minfo{font-size:.74rem;color:var(--dim)}
+.munbox .minfo.baixo{color:var(--accent)}
+.munbox .mpips{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;height:9px;flex:1 1 90px;min-width:70px;max-width:240px}
+.munbox .mpips i{background:var(--line);clip-path:polygon(0 0,100% 0,calc(100% - 3px) 100%,0 100%)}
+.munbox .mpips i.v{background:var(--ink,#222)}
+.munbox button.rec{flex:0 0 auto;padding:4px 10px}
+.munpack{flex:1 1 100%;display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 2px}
+.munpack .mlab{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim)}
+.munpack .vstp input{font-size:20px!important}
+.munpack .vstp input.vmx{font-size:15px!important}
 </style>
 <script src="nav.js"></script>
 </head>
@@ -507,6 +524,7 @@ select.dsel option{color:var(--ink);background:var(--panel)}
     <div id="ataques"></div>
     <button class="addbtn" onclick="addAtaque()">+ adicionar ataque</button>
     <div style="font-size:.7rem;color:var(--dim);margin-top:6px">Monte o ataque uma vez (ex: "2d10+DP" para um fuzil) e use o botão Rolar para jogar o dado de dano direto, sem digitar a expressão de novo. Notas guardam alcance, precisão, efeitos etc.</div>
+    <div style="font-size:.7rem;color:var(--dim);margin-top:6px"><b>Munição:</b> ao escolher uma arma de fogo do catálogo, o contador aparece cheio (a capacidade da arma). Use ‹ e › para gastar ou devolver 1 tiro (−3 gasta uma rajada). <b>Recarregar</b> enche a arma e desconta os tiros dos pacotes de munição do mesmo tipo que estiverem no seu inventário; cada pacote tem o próprio contador de tiros. Em armas sem contagem (ou sem catálogo), use o botão Munição da linha para ligar o contador e preencher a capacidade.</div>
     <div style="font-size:.74rem;color:var(--dim);margin-top:8px;line-height:1.5"><b>Reações</b> (sem limite por rodada; a partir da 2ª, −2 passos cumulativos): <b>Esquiva</b> = Reflexos +1d6 (esse d6 só vale contra o ataque) contra o ataque; se vencer, ninguém sofre dano. <b>Contra-Ataque</b> (só corpo a corpo) = Briga contra o ataque; quem vencer causa dano. <b>Bloqueio</b> = Tenacidade contra o ataque; reduz o dano pela diferença.</div>
     <div style="font-size:.74rem;color:var(--dim);margin-top:6px;line-height:1.5"><b>Margem de vitória</b> (corpo a corpo com arma): vencer a reação por 4+ dá +1 dado da arma; por 8+, +2 dados (não vale em crítico). <b>Crítico</b> ignora a RD do alvo. <b>Rajada</b> (arma automática): 3 tiros, até 2 alvos a 3m um do outro, 1 passo a menos em cada teste.</div>
   </div>
@@ -851,10 +869,63 @@ function avisoProf(i){
 }
 
 // ---- Itens (Bolsos / Vestidos / dentro de Recipientes): linha compacta + notas em modal ----
+// ---- Contador de munição ----
+const PACOTE_TIROS = {'Balas Curtas':15,'Balas Longas':20,'Cartuchos':10,'Combustível':5,'Flechas':15,'Foguete':1};
+const TIPOS_MUN = Object.keys(PACOTE_TIROS);
+const packReg = {};      // chave do item no inventário -> {setTiros(v)}
+const munRefresh = {};   // id do ataque -> função que atualiza a linha de munição
+function munDoItem(it){
+  const m = /Munição:\s*([^·]+?)\s*·\s*Capacidade:\s*(\d+)/.exec((it&&it.x)||'');
+  return m ? {pk:m[1].trim(), cap:parseInt(m[2],10)} : null;
+}
+function tirosNoInventario(pk){
+  let t = 0;
+  Object.keys(packReg).forEach(k=>{ const v = store[k]; if(v && v.g==='Munição' && v.it===pk) t += Number(v.tiros)||0; });
+  return t;
+}
+function munRefreshAll(){ Object.keys(munRefresh).forEach(id=>{ try{ munRefresh[id](); }catch(e){} }); }
+function munPips(el, cur, max){
+  const n = max>0 ? Math.min(max,24) : 0;
+  const fill = n ? Math.max(0, Math.min(n, Math.round(Math.min(cur,max)/max*n))) : 0;
+  const key = cur+'/'+max+'/'+n+'/'+fill; if(el.dataset.k===key) return; el.dataset.k = key;
+  let h=''; for(let i=0;i<n;i++) h += '<i'+(i<fill?' class="v"':'')+'></i>'; el.innerHTML = h;
+}
+// contador com « ‹ atual / máximo › » no mesmo estilo dos de PV
+function munStepper(o){
+  const s = document.createElement('span'); s.className='vstp';
+  function b(t,d,ti){ const x=document.createElement('button'); x.type='button'; x.className='noprint'; x.textContent=t; x.title=ti; x.setAttribute('aria-label',ti); x.onclick=e=>{ e.preventDefault(); o.set(o.get()+d); }; return x; }
+  const cur = document.createElement('input'); cur.type='number'; cur.className='vcur'; cur.min=0; cur.inputMode='numeric';
+  const mx = document.createElement('input'); mx.type='number'; mx.className='vmx'; mx.min=0; mx.inputMode='numeric';
+  const sep = document.createElement('span'); sep.className='sep'; sep.textContent='/';
+  if(o.rajada) s.appendChild(b('−3',-3,'Rajada: gasta 3 tiros'));
+  s.appendChild(b('‹',-1,'−1 tiro')); s.appendChild(cur); s.appendChild(sep); s.appendChild(mx); s.appendChild(b('›',1,'+1 tiro'));
+  cur.onchange = ()=>o.set(parseInt(cur.value,10)||0);
+  mx.onchange = ()=>o.setMax(parseInt(mx.value,10)||0);
+  s.sync = ()=>{ if(document.activeElement!==cur) cur.value = o.get(); if(document.activeElement!==mx) mx.value = o.max(); };
+  return s;
+}
+// pacote no inventário: tiros que ainda tem
+function munPackUI(storeKey, st, persist){
+  const box = document.createElement('div'); box.className='munpack';
+  const lab = document.createElement('span'); lab.className='mlab'; lab.textContent='Tiros no pacote';
+  const stp = munStepper({
+    get:()=>Number(st.tiros)||0,
+    max:()=>Number(st.tmax)||0,
+    set:v=>{ v = Math.max(0, v); if(Number(st.tmax)>0) v = Math.min(v, Number(st.tmax)); st.tiros = v; persist(); stp.sync(); },
+    setMax:v=>{ st.tmax = Math.max(0,v); if(Number(st.tmax)>0 && (Number(st.tiros)||0)>st.tmax) st.tiros = st.tmax; persist(); stp.sync(); }
+  });
+  const pips = document.createElement('div'); pips.className='mpips';
+  box.appendChild(lab); box.appendChild(stp); box.appendChild(pips);
+  box.sync = ()=>{ stp.sync(); munPips(pips, Number(st.tiros)||0, Number(st.tmax)||0); };
+  box.sync();
+  return box;
+}
 function addEquipRow(containerEl, storeKey, data, opts){
   opts = opts || {};
   data = data || {nome:'',cat:'',carga:'',notas:''};
   const row = document.createElement('div'); row.className='eqrow wrapped';
+  const stPk = {tiros:data.tiros, tmax:data.tmax};
+  if((data.g||'')==='Munição' && PACOTE_TIROS[data.it||''] && stPk.tmax===undefined){ stPk.tmax = PACOTE_TIROS[data.it]; if(stPk.tiros===undefined) stPk.tiros = stPk.tmax; }
   const nome = document.createElement('input'); nome.type='text'; nome.className='nome'; nome.placeholder='Nome do item'; nome.value = data.nome||'';
   // seletor do catálogo (opcional): grupo -> item preenche nome, categoria, carga e notas
   const gSel = document.createElement('select'); gSel.add(new Option('— grupo do catálogo —',''));
@@ -885,8 +956,17 @@ function addEquipRow(containerEl, storeKey, data, opts){
       aviso(lim.msg || ('Carga máxima permitida aqui: '+lim.max));
     }
   }
-  function persist(){ clampCarga(); store[storeKey] = {nome:nome.value, cat:cat.value, carga:carga.value, g:gSel.value, it:iSel.value}; recalcAll(); }
-  gSel.onchange = ()=>{ preencherItens(); prevIt = ''; persist(); };
+  const temPacote = ()=> gSel.value==='Munição' && !!PACOTE_TIROS[iSel.value];
+  const packUI = munPackUI(storeKey, stPk, ()=>persist());
+  function mostrarPacote(){ packUI.style.display = temPacote() ? '' : 'none'; packUI.sync(); }
+  function persist(){
+    clampCarga();
+    const o = {nome:nome.value, cat:cat.value, carga:carga.value, g:gSel.value, it:iSel.value};
+    if(temPacote()){ o.tiros = Number(stPk.tiros)||0; o.tmax = Number(stPk.tmax)||0; }
+    store[storeKey] = o; recalcAll();
+  }
+  packReg[storeKey] = {setTiros:v=>{ stPk.tiros = Math.max(0,v); persist(); packUI.sync(); }};
+  gSel.onchange = ()=>{ preencherItens(); prevIt = ''; mostrarPacote(); persist(); };
   iSel.onchange = ()=>{
     const it = ITENS.find(x=>x.g===gSel.value && x.n===iSel.value);
     if(!it){ prevIt = ''; persist(); return; }
@@ -902,14 +982,18 @@ function addEquipRow(containerEl, storeKey, data, opts){
     nome.value = it.n; cat.value = CAT_ROMANO[it.c]; carga.value = it.k;
     store[storeKey+'__notas'] = notasDe(it);
     prevIt = it.n;
+    if(it.g==='Munição' && PACOTE_TIROS[it.n]){ stPk.tmax = PACOTE_TIROS[it.n]; stPk.tiros = stPk.tmax; }
+    mostrarPacote();
     persist(); avisoProf(it);
   };
   nome.oninput = persist; cat.onchange = persist; carga.oninput = persist;
   btnNotas.onclick = ()=> openModal(storeKey+'__notas', (nome.value||'Item')+' — Notas');
-  btnDel.onclick = ()=>{ row.remove(); delete store[storeKey]; delete store[storeKey+'__notas']; recalcAll(); };
-  row.appendChild(pick); row.appendChild(nome); row.appendChild(cat); row.appendChild(carga); row.appendChild(btnNotas); row.appendChild(btnDel);
+  btnDel.onclick = ()=>{ row.remove(); delete packReg[storeKey]; delete store[storeKey]; delete store[storeKey+'__notas']; recalcAll(); };
+  row.appendChild(pick); row.appendChild(nome); row.appendChild(cat); row.appendChild(carga); row.appendChild(btnNotas); row.appendChild(btnDel); row.appendChild(packUI);
   containerEl.appendChild(row);
   store[storeKey] = {nome:data.nome||'', cat:data.cat||'', carga:data.carga||'', g:data.g||'', it:data.it||''};
+  if(temPacote()){ store[storeKey].tiros = Number(stPk.tiros)||0; store[storeKey].tmax = Number(stPk.tmax)||0; }
+  mostrarPacote();
   if(data.notas) store[storeKey+'__notas'] = data.notas;
 }
 
@@ -1092,6 +1176,7 @@ function recalcAll(){
   Object.keys(recRefresh).forEach(id=>recRefresh[id]());
   updateLimites();
   updateCargaAviso();
+  munRefreshAll();
   save();
 }
 
@@ -1527,12 +1612,65 @@ function addAtaque(data){
     catSelA.appendChild(og);
   });
   const pickA = document.createElement('div'); pickA.className='eqpick noprint'; pickA.appendChild(catSelA);
+  const st = {on:!!data.on, cap:Number(data.cap)||0, mun:Number(data.mun)||0, pk:data.pk||''};
   const dano = document.createElement('input'); dano.type='text'; dano.style.flex='0 0 110px'; dano.placeholder='2d10+DP'; dano.value = data.dano||'';
   const tipo = document.createElement('input'); tipo.type='text'; tipo.style.flex='0 0 90px'; tipo.placeholder='Tipo'; tipo.value = data.tipo||'';
   const btnRoll = document.createElement('button'); btnRoll.type='button'; btnRoll.textContent='Rolar';
   const btnNotas = document.createElement('button'); btnNotas.type='button'; btnNotas.textContent='Notas';
+  const btnMun = document.createElement('button'); btnMun.type='button'; btnMun.textContent='Munição'; btnMun.className='noprint'; btnMun.style.flex='0 0 auto'; btnMun.style.padding='4px 8px'; btnMun.title='mostrar ou esconder o contador de munição';
   const btnDel = document.createElement('button'); btnDel.type='button'; btnDel.textContent='×'; btnDel.title='remover';
-  function persist(){ store[id] = {nome:nome.value, dano:dano.value, tipo:tipo.value}; save(); }
+  function persist(){ store[id] = {nome:nome.value, dano:dano.value, tipo:tipo.value, on:st.on, cap:st.cap, mun:st.mun, pk:st.pk}; save(); }
+  // ---- linha de munição ----
+  const mbox = document.createElement('div'); mbox.className='munbox';
+  const mlab = document.createElement('span'); mlab.className='mlab'; mlab.textContent='Munição';
+  const pkSel = document.createElement('select'); pkSel.title='tipo de pacote que esta arma usa';
+  pkSel.add(new Option('— pacote —',''));
+  TIPOS_MUN.forEach(t=>pkSel.add(new Option(t,t)));
+  const mstp = munStepper({
+    rajada:true,
+    get:()=>st.mun, max:()=>st.cap,
+    set:v=>{
+      if(v<0){ aviso('Sem munição: recarregue a arma.'); v = 0; }
+      if(st.cap>0) v = Math.min(v, st.cap);
+      st.mun = v; persist(); msync();
+    },
+    setMax:v=>{ st.cap = Math.max(0,v); if(st.cap>0 && st.mun>st.cap) st.mun = st.cap; persist(); msync(); }
+  });
+  const mpips = document.createElement('div'); mpips.className='mpips';
+  const btnRec = document.createElement('button'); btnRec.type='button'; btnRec.className='rec noprint'; btnRec.textContent='Recarregar'; btnRec.title='enche a arma com os tiros dos pacotes do inventário';
+  const minfo = document.createElement('span'); minfo.className='minfo';
+  [mlab,pkSel,mstp,mpips,btnRec,minfo].forEach(e=>mbox.appendChild(e));
+  function msync(){
+    mbox.style.display = st.on ? '' : 'none';
+    btnMun.style.opacity = st.on ? '1' : '.7';
+    if(pkSel.value!==st.pk) pkSel.value = st.pk;
+    mstp.sync(); munPips(mpips, st.mun, st.cap);
+    if(!st.pk) minfo.textContent = 'escolha o pacote para recarregar';
+    else { const t = tirosNoInventario(st.pk); minfo.textContent = 'no inventário: '+t+' tiro'+(t===1?'':'s')+' de '+st.pk; }
+    minfo.classList.toggle('baixo', st.cap>0 && st.mun===0);
+  }
+  munRefresh[id] = msync;
+  pkSel.onchange = ()=>{ st.pk = pkSel.value; persist(); msync(); };
+  nome.style.minWidth='130px';
+  btnMun.onclick = ()=>{ st.on = !st.on; persist(); msync(); };
+  btnRec.onclick = ()=>{
+    if(!(st.cap>0)){ aviso('Defina a capacidade da arma (o número depois da barra).'); return; }
+    if(!st.pk){ aviso('Escolha o tipo de pacote que esta arma usa.'); return; }
+    let falta = st.cap - st.mun;
+    if(falta<=0){ aviso('A arma já está carregada.'); return; }
+    const antes = falta;
+    Object.keys(packReg).forEach(k=>{
+      if(falta<=0) return;
+      const v = store[k]; if(!v || v.g!=='Munição' || v.it!==st.pk) return;
+      const t = Number(v.tiros)||0; if(t<=0) return;
+      const tira = Math.min(t, falta);
+      packReg[k].setTiros(t - tira); falta -= tira;
+    });
+    const posto = antes - falta;
+    st.mun += posto; persist(); recalcAll();
+    if(posto===0) aviso('Sem '+st.pk+' no inventário. Adicione um pacote (ou some tiros nele) para recarregar.');
+    else if(falta>0) aviso('Os pacotes acabaram: recarregou '+posto+' tiro'+(posto===1?'':'s')+' e ainda faltam '+falta+' para encher a arma.');
+  };
   nome.oninput = persist; dano.oninput = persist; tipo.oninput = persist;
   catSelA.onchange = ()=>{
     const v = catSelA.value; if(!v) return;
@@ -1542,7 +1680,10 @@ function addAtaque(data){
     if(notaAtual && !ehNotaItemAuto(notaAtual) && !confirm('Substituir as notas que você escreveu pelas de "'+it.n+'"?')){ catSelA.value=''; return; }
     nome.value = it.n; dano.value = it.d; tipo.value = it.tp||'';
     store[id+'__notas'] = notasDe(it);
-    persist(); catSelA.value = ''; avisoProf(it);
+    const mi = munDoItem(it);
+    if(mi){ st.on = true; st.pk = TIPOS_MUN.indexOf(mi.pk)>=0 ? mi.pk : ''; st.cap = mi.cap; st.mun = mi.cap; }
+    else { st.on = false; st.cap = 0; st.mun = 0; st.pk = ''; }
+    persist(); msync(); catSelA.value = ''; avisoProf(it);
   };
   btnRoll.onclick = ()=>{
     const r = parseAndRoll(dano.value||'');
@@ -1551,10 +1692,11 @@ function addAtaque(data){
     alert(resumo + (r.detalhes.length ? '\n'+r.detalhes.join(' | ') : ''));
   };
   btnNotas.onclick = ()=> openModal(id+'__notas', (nome.value||'Ataque')+' — Notas (alcance, precisão, efeitos...)');
-  btnDel.onclick = ()=>{ row.remove(); delete store[id]; delete store[id+'__notas']; save(); };
-  row.appendChild(pickA); row.appendChild(nome); row.appendChild(dano); row.appendChild(tipo); row.appendChild(btnRoll); row.appendChild(btnNotas); row.appendChild(btnDel);
+  btnDel.onclick = ()=>{ row.remove(); delete munRefresh[id]; delete store[id]; delete store[id+'__notas']; save(); };
+  row.appendChild(pickA); row.appendChild(nome); row.appendChild(dano); row.appendChild(tipo); row.appendChild(btnRoll); row.appendChild(btnMun); row.appendChild(btnNotas); row.appendChild(btnDel); row.appendChild(mbox);
   wrap.appendChild(row);
-  store[id] = {nome:data.nome||'', dano:data.dano||'', tipo:data.tipo||''};
+  store[id] = {nome:data.nome||'', dano:data.dano||'', tipo:data.tipo||'', on:st.on, cap:st.cap, mun:st.mun, pk:st.pk};
+  msync();
   if(data.notas) store[id+'__notas'] = data.notas;
   save();
 }
