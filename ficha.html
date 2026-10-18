@@ -386,7 +386,8 @@ select.dsel option{color:var(--ink);background:var(--panel)}
         <span>+ RA do Custo do Paranormal</span>
         <div class="sub" id="dtRitSub">2 + metade do nível do personagem (arredondado para cima). Preencha NT e NEX.</div>
       </div>
-      <div style="font-size:.7rem;color:var(--dim);margin:6px 0">Custo em PE por círculo: 1° = 1 · 2° = 3 · 3° = 6 · 4° = 10 (mais os aprimoramentos). Teste de Ocultismo contra DT 6 + PE do ritual. Quem sabe o ritual e falha perde Sanidade igual ao PE gasto (o dobro se falhar por 5 ou mais). Aprender qualquer poder ou ritual de Medo custa 4 de Sanidade máxima permanente. Todo ritual exige um Contato Paranormal empunhado (os rituais estudados só pedem o item no inventário, ou um teste de Memória de mesma DT se não tiver nenhum) e os componentes ritualísticos do elemento (Afinidade dispensa).</div>
+      <div class="field" style="margin:8px 0;max-width:280px"><label>Canal (atributo do Custo do Paranormal)</label><select data-k="canal"><option></option><option>Físico</option><option>Presteza</option><option>Mente</option><option>Espírito</option></select></div>
+      <div style="font-size:.7rem;color:var(--dim);margin:6px 0">Custo em PE por círculo: 1° = 1 · 2° = 3 · 3° = 6 · 4° = 10 (mais os aprimoramentos). Teste de Ocultismo contra DT 6 + PE do ritual, usando o dado do atributo do seu Canal no lugar de Espírito. O Canal é fixo e escolhido ao aprender o primeiro ritual. Quem sabe o ritual e falha perde Sanidade igual ao PE gasto (o dobro se falhar por 5 ou mais). Aprender qualquer poder ou ritual de Medo custa 4 de Sanidade máxima permanente. Todo ritual exige um Contato Paranormal empunhado (os rituais estudados só pedem o item no inventário, ou um teste de Memória de mesma DT se não tiver nenhum) e os componentes ritualísticos do elemento (Afinidade dispensa).</div>
       <div id="rituais"></div>
       <button class="addbtn" onclick="addRitual()">+ adicionar</button>
     </div>
