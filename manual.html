@@ -846,6 +846,39 @@ html{scroll-padding-top:var(--barh,110px)}
   <li>Reduções de custo de PE, de qualquer fonte, nunca reduzem um custo para menos de <b>1</b>.</li>
 </ul>
 
+<h3 id="medo-efeitos">Efeitos de Medo</h3>
+<p>Sempre que a Sanidade de um personagem é reduzida a 0 por dano mental, e sempre que ele sofre dano mental já estando com Sanidade 0, ele sofre um <b>Efeito de Medo</b>. O jogador rola 2d10 na tabela abaixo. Os efeitos duram até o personagem recuperar pelo menos 1 ponto de Sanidade, a menos que a descrição diga outra coisa.</p>
+<ul class="regras">
+  <li><b>Medo repetido.</b> Se o personagem sofrer mais de um Efeito de Medo na mesma cena, soma +1 na rolagem por cada vez adicional (2d10+1 na segunda, 2d10+2 na terceira, e assim por diante), aumentando a chance de efeitos mais severos.</li>
+  <li><b>Efeito repetido.</b> Se rolar um efeito que já possui, em vez disso recebe o próximo efeito da tabela. Quem já está Abalado e rola 11, por exemplo, sofre Alucinação.</li>
+  <li><b>Modificadores.</b> Poderes e rituais que alteram a rolagem (como Vivendo com Medo, que dá -2) somam ou subtraem do resultado dos 2d10.</li>
+</ul>
+<div class="tw"><table>
+  <thead><tr><th>2d10</th><th>Efeito</th><th>Descrição</th></tr></thead>
+  <tbody>
+    <tr><td class="m">2</td><td><b>Encorajamento</b></td><td>Às vezes o medo traz o melhor de nós. Você recupera Sanidade igual ao seu NT e recebe +2 passos em um teste qualquer à sua escolha até o fim da cena.</td></tr>
+    <tr><td class="m">3</td><td><b>Surto de adrenalina</b></td><td>Você recebe +2 passos nos testes de ataque e nas rolagens de dano até o fim da cena. Porém, para fazer qualquer ação que não seja agredir, precisa passar em um teste de Coragem (DT 10). Se falhar, perde a ação.</td></tr>
+    <tr><td class="m">4</td><td><b>Hesitação</b></td><td>Você balbucia ou gagueja e vacila. Fica Atordoado por 1 rodada.</td></tr>
+    <tr><td class="m">5</td><td><b>Fraqueza</b></td><td>Você começa a passar mal e a suar, talvez até vomitando. Fica Fraco.</td></tr>
+    <tr><td class="m">6</td><td><b>Lapso</b></td><td>Sua memória falha, e eventos de mais de uma hora atrás ficam nebulosos. Fica Frustrado.</td></tr>
+    <tr><td class="m">7</td><td><b>Ansiedade</b></td><td>Você fica nervoso e tenso. Falha automaticamente no próximo teste que fizer. Pode gastar uma ação padrão no seu turno fazendo algo "inútil", para a qual a falha não importe, e se livrar da penalidade (mas terá perdido a ação).</td></tr>
+    <tr><td class="m">8</td><td><b>Desorientação</b></td><td>Você mal entende onde está e o que acontece. Fica Desprevenido.</td></tr>
+    <tr><td class="m">9</td><td><b>Desespero</b></td><td>Uma tristeza avassaladora, talvez culpa ou inutilidade. Você falha automaticamente em qualquer teste de Coragem.</td></tr>
+    <tr><td class="m">10</td><td><b>Histeria</b></td><td>Você ri ou chora descontroladamente por 1d4 rodadas. Nesse período, sofre -2 passos em todos os testes.</td></tr>
+    <tr><td class="m">11</td><td><b>Abalo</b></td><td>Você treme e ofega, com dificuldade de fazer qualquer coisa. Fica Abalado.</td></tr>
+    <tr><td class="m">12</td><td><b>Alucinação</b></td><td>Você vê e ouve coisas que não existem ou chegam distorcidas: sombras se movendo sozinhas, rostos mesclados a pedaços de criaturas, vozes na cabeça. Sempre que fizer um teste, se o dado de atributo cair em um número ímpar, o teste é automaticamente uma falha. Você pode ignorar as alucinações, mas talvez o vulto se aproximando por trás seja mesmo um monstro.</td></tr>
+    <tr><td class="m">13</td><td><b>Susto</b></td><td>Você passa a tremer e arfar de forma incontrolável. Fica Apavorado.</td></tr>
+    <tr><td class="m">14</td><td><b>Confusão</b></td><td>Você perde o controle das próprias ações. Fica Confuso.</td></tr>
+    <tr><td class="m">15</td><td><b>Paralisia</b></td><td>Você "congela". Fica Paralisado por 1d4 rodadas e então Abalado.</td></tr>
+    <tr><td class="m">16</td><td><b>Pavor</b></td><td>Você entra em pânico e precisa gastar todas as suas ações para fugir da fonte do medo da melhor forma possível. Ações que exijam concentração (como conjurar um ritual) têm 50% de chance de falha (role qualquer dado; em ímpar você não consegue e perde o turno). Se não conseguir fugir, fica encolhido, chorando, sem agir. Se conseguir fugir, pode voltar a agir, mas fica Abalado.</td></tr>
+    <tr><td class="m">17</td><td><b>Desmaio</b></td><td>O choque faz sua mente se "desligar" para se proteger. Você fica Inconsciente.</td></tr>
+    <tr><td class="m">18</td><td><b>Trauma</b></td><td>Você fica Paralisado, como no resultado 15, e rola 1d6. Em 1 a 5, o dado de um atributo à escolha do Mestre perde 1 passo permanentemente (mínimo d4). Em 6, nenhum atributo é afetado (mas você continua Paralisado).</td></tr>
+    <tr><td class="m">19</td><td><b>Loucura</b></td><td>O medo é demais para a sua mente, que começa a sucumbir. Você fica Enlouquecendo.</td></tr>
+    <tr><td class="m">20+</td><td><b>Choque sistêmico</b></td><td>O medo é demais para o seu corpo, que entra em choque (uma parada cardiorrespiratória, por exemplo). Você fica Morrendo.</td></tr>
+  </tbody>
+</table></div>
+<p><b>Enlouquecendo.</b> O personagem tem 3 turnos para ser acalmado (recuperar pelo menos 1 de Sanidade). Se não for, a mente cede: ele passa a ser controlado pelo Mestre e só volta a si depois de um interlúdio de tratamento.</p>
+
 <h2 id="pericias">Perícias</h2>
 <p>Você começa com pontos de perícia iguais a <b>4 + metade da sua Mente</b>. Todas as perícias começam em <span class="dado" role="img" aria-label="d4"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon class="f" points="12,4 20.5,19 3.5,19"/><text x="12" y="17" style="font-size:8.5px">4</text></svg></span>, e cada ponto aumenta o passo em 1, até o teto de <span class="dado" role="img" aria-label="d8"><svg viewBox="0 0 24 24" aria-hidden="true"><polygon class="f" points="12,3 21,12 12,21 3,12"/><text x="12" y="15.3" style="font-size:10px">8</text></svg></span>.</p>
 <ul class="regras">
