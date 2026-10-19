@@ -40,7 +40,8 @@ var PAGS=[
  {k:'3',n:'Evolução',u:'manual.html#cap3',d:8,cap:3,t:'Evolução, especializações, poderes paranormais e rituais.'},
  {k:'4',n:'Equipamentos',u:'manual.html#cap7',d:10,cap:7,t:'Inventário, armas, proteções, modificações e maldições.'},
  {k:'5',n:'Ameaças',u:'manual.html#cap9',ex:'ameaca.html',d:12,cap:9,t:'Criação de criaturas e de humanos, arquétipos prontos e a ficha de ameaça.'},
- {k:'6',n:'Fichas',u:'ficha.html',d:20,t:'Ficha de personagem interativa, com várias fichas salvas.'}];
+ {k:'6',n:'Fichas',u:'ficha.html',d:20,t:'Ficha de personagem interativa, com várias fichas salvas.'},
+ {k:'7',n:'Combate',u:'combate.html',d:20,t:'Rastreador de combate: iniciativa, PV, condições e as fichas de personagens e ameaças.'}];
 var PARTE={1:4,2:6,3:8,4:8,5:8,6:8,7:10,8:10,9:12};
 var arq=(location.pathname.split('/').pop()||'index.html').toLowerCase();
 /* toda visita nova (aba ou sessão nova) começa pela capa */
@@ -76,7 +77,7 @@ function montar(){
   var nav=document.createElement('nav');nav.className='vrail';nav.setAttribute('aria-label','Partes do site');
   var h='<a class="marca" href="index.html" title="Início (Alt+0)">Ordem<br>Paranormal<br>Reexistência</a>';
   PAGS.forEach(function(p){h+='<a class="vb" href="'+p.u+'" data-d="'+p.d+'"'+((arq===p.u||arq===p.ex)?' aria-current="page"':'')+' title="Alt+'+p.k+' · d'+p.d+'">'+dado(p.d)+p.n+'</a>';});
-  h+='<div class="fim"><button type="button" class="vtema" id="vtema" aria-haspopup="true" aria-expanded="false" title="Trocar paleta (Alt+P)">Paletas</button><span class="nomepal" id="nomepal"></span><kbd>Alt+1 a 6 · P</kbd></div>';
+  h+='<div class="fim"><button type="button" class="vtema" id="vtema" aria-haspopup="true" aria-expanded="false" title="Trocar paleta (Alt+P)">Paletas</button><span class="nomepal" id="nomepal"></span><kbd>Alt+1 a 7 · P</kbd></div>';
   nav.innerHTML=h;b.appendChild(nav);
   if(document.querySelector('.capitulo')){
     var marca=function(){var c=document.querySelector('.capitulo:not([hidden])'),d=c?PARTE[c.getAttribute('data-cap')]:0;

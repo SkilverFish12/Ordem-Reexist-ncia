@@ -324,7 +324,7 @@ select.dsel option{color:var(--ink);background:var(--panel)}
   <!-- PERÍCIAS -->
   <div class="card" id="cardPericias">
     <h2>Perícias</h2>
-    <div style="font-size:.78rem;color:var(--dim);margin-bottom:8px">Pontos de perícia: <strong id="periciaGastos">0</strong> gastos de <strong id="periciaDisponivel">0</strong> disponíveis <span id="periciaBreak"></span> (d4=0 · d6=1 · d8=2 · d10=3 · d12=4 — não é bloqueado, só um guia). Cada perícia tem um atributo-base, mas o Mestre pode pedir outro atributo conforme a situação (veja Rolagem Rápida).</div>
+    <div style="font-size:.78rem;color:var(--dim);margin-bottom:8px">Pontos de perícia: <strong id="periciaGastos">0</strong> gastos de <strong id="periciaDisponivel">0</strong> disponíveis <span id="periciaBreak"></span> (d4=0 · d6=1 · d8=2 · d10=3 · d12=4 — não é bloqueado, só um guia). Toda perícia já começa em d4. Cada perícia tem um atributo-base, mas o Mestre pode pedir outro atributo conforme a situação (veja Rolagem Rápida).</div>
     <div class="periciasgrid" id="periciasGrupos"></div>
   </div>
   </div>
@@ -2370,6 +2370,8 @@ buildPericias();
 buildCondicoes();
 buildRollSelect();
 Object.assign(store, load());
+// Ficha nova (nada salvo ainda): todas as perícias começam em d4
+if(!Object.keys(store).length){ PERICIAS.forEach(([p])=>{ store['per_'+p]='d4'; }); }
 if(store['deslocamento']===undefined) store['deslocamento'] = '9';
 migrar();
 migrar3();
