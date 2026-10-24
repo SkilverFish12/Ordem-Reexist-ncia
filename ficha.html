@@ -63,8 +63,9 @@ textarea{resize:vertical;min-height:44px;border:1px solid var(--line);border-rad
 .modal-box h3{margin:0;font-size:1rem;color:var(--accent)}
 .modal-box textarea{min-height:240px;border:1px solid var(--line);border-radius:4px;padding:8px;background:transparent;color:var(--ink);font-family:inherit;flex:1}
 .modal-actions{display:flex;justify-content:flex-end;gap:8px}
-.modalfield{display:flex;gap:8px;align-items:center}
-.preview{font-size:.82rem;color:var(--dim);flex:1;min-height:1.2em;padding:4px 0}
+.modalfield{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.preview{font-size:.82rem;color:var(--dim);flex:1 1 100%;min-height:1.2em;padding:4px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45}
+.preview.cheio{color:var(--ink);border-left:2px solid var(--accent);padding-left:10px}
 .eqhead{display:flex;gap:6px;font-size:.68rem;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;padding:0 0 4px}
 .eqhead span:nth-child(1){flex:2}
 .eqhead span:nth-child(2),.eqhead span:nth-child(3){flex:0 0 55px}
@@ -681,7 +682,8 @@ function updatePreview(key){
   const el = document.getElementById('prev_'+key);
   if(!el) return;
   const txt = store[key] || '';
-  el.textContent = txt ? (txt.length>80 ? txt.slice(0,80)+'…' : txt) : '(vazio)';
+  el.textContent = txt ? txt : '(vazio)';
+  el.classList.toggle('cheio', !!txt);
 }
 
 // ---- Especializações / Rituais / Poderes: nome curto + texto em modal ----
