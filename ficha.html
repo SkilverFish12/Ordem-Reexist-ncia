@@ -217,6 +217,27 @@ select.dsel option{color:var(--ink);background:var(--panel)}
 .munpack .mlab{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim)}
 .munpack .vstp input{font-size:20px!important}
 .munpack .vstp input.vmx{font-size:15px!important}
+
+.modsbox{max-width:760px}
+.modsctx{font-size:.78rem;color:var(--dim)}
+.modstabs{display:flex;gap:6px;flex-wrap:wrap}
+.modstabs button.on{border-color:var(--accent);color:var(--accent)}
+.modslista{overflow:auto;flex:1;min-height:200px;display:flex;flex-direction:column;gap:6px}
+.modssec{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-top:6px}
+.modscard{border:1px solid var(--line);border-radius:5px;padding:7px 9px}
+.modscard.on{border-color:var(--accent)}
+.modstop{display:flex;align-items:center;gap:8px;margin:0;font-size:.9rem;text-transform:none;letter-spacing:0;color:var(--ink);cursor:pointer}
+.modstop input{width:auto}
+.modsel,.modsav{font-size:.7rem;color:var(--dim);margin-left:auto}
+.modsav{display:flex;align-items:center;gap:4px}
+.modsav input{width:auto}
+.modstx{font-size:.78rem;color:var(--dim);margin-top:3px;line-height:1.4}
+.modsta{border-top:1px dotted var(--line);padding-top:3px}
+.modsta.on{color:var(--ink)}
+.modscp{font-size:.72rem;color:var(--accent2);margin-top:2px}
+.modsresumo{font-size:.8rem;color:var(--ink);border-top:1px solid var(--line);padding-top:6px}
+button.btnmods{flex:0 0 auto}
+button.btnmods.tem{border-color:var(--accent)}
 </style>
 <script src="nav.js"></script>
 </head>
@@ -528,7 +549,7 @@ select.dsel option{color:var(--ink);background:var(--panel)}
     <div style="font-size:.7rem;color:var(--dim);margin-top:6px">Monte o ataque uma vez (ex: "12+RB" para um fuzil de assalto) e use o botão Rolar para jogar o dado de dano direto, sem digitar a expressão de novo. Notas guardam alcance, precisão, efeitos etc.</div>
     <div style="font-size:.7rem;color:var(--dim);margin-top:6px"><b>Munição:</b> ao escolher uma arma de fogo do catálogo, o contador aparece cheio (a capacidade da arma). Use ‹ e › para gastar ou devolver 1 tiro (−3 gasta uma rajada). <b>Recarregar</b> enche a arma e desconta os tiros dos pacotes de munição do mesmo tipo que estiverem no seu inventário; cada pacote tem o próprio contador de tiros. Em armas sem contagem (ou sem catálogo), use o botão Munição da linha para ligar o contador e preencher a capacidade.</div>
     <div style="font-size:.74rem;color:var(--dim);margin-top:8px;line-height:1.5"><b>Reações</b> (sem limite por rodada; a partir da 2ª, −2 passos cumulativos): <b>Esquiva</b> = Reflexos +1d6 (esse d6 só vale contra o ataque) contra o ataque; se vencer, ninguém sofre dano. <b>Contra-Ataque</b> (só corpo a corpo) = Briga contra o ataque; quem vencer causa dano. <b>Bloqueio</b> = Tenacidade contra o ataque; reduz o dano pela diferença.</div>
-    <div style="font-size:.74rem;color:var(--dim);margin-top:6px;line-height:1.5"><b>Margem de vitória</b> (corpo a corpo com arma): vencer a reação por 4+ dá +3 de dano; por 8+, +6 (não vale em crítico). <b>Crítico</b>: dano dobrado + RA + RB, e ignora a RD do alvo. <b>Rajada</b> (arma automática): 3 tiros, até 2 alvos a 3m um do outro, 1 passo a menos em cada teste.</div>
+    <div style="font-size:.74rem;color:var(--dim);margin-top:6px;line-height:1.5"><b>Margem de vitória</b> (corpo a corpo com arma): vencer a reação por 4+ dá +3 de dano; por 8+, +6 (não vale em crítico). <b>Crítico</b>: dano dobrado + RA + RB. <b>Rajada</b> (arma automática): 3 tiros, até 2 alvos a 3m um do outro, 1 passo a menos em cada teste.</div>
   </div>
     <div class="pagfoot noprint"><button type="button" onclick="irPagina(4)">← Anterior</button><span style="color:var(--dim);font-size:.75rem">Página 5 de 5</span><span></span></div>
   </section>
@@ -750,7 +771,6 @@ const ITENS = [
 {g:'Armas Simples',s:'dp',n:'Revólver',c:1,k:1,d:'8+RB',tp:'Balístico',x:'Disparo · Precisão 9 · Alcance Curto · Munição: Balas Curtas · Capacidade: 6, recarga lenta · Uma Mão',t:`Arma clássica de duelos, de tambor e fácil de sacar. Com uma ação completa, dispara 3 tiros em sequência com um único ataque, gastando 3 munições (a arma precisa ter pelo menos 3 tiros). A DT do ataque aumenta em +3 e, se acertar, o dano é 26 + RB, como se os três disparos fossem somados.`},
 {g:'Armas Simples',s:'dp',n:'Rifle de Caça',c:1,k:2,d:'10+RB',tp:'Balístico',x:'Disparo · Precisão 9 · Alcance Médio · Munição: Balas Longas · Capacidade: 5, recarga lenta · Duas Mãos',t:`Arma de fogo longa de caça. Quem a usa recebe +1d6 em testes de Crime para ocultá-la.`},
 // ===== ARMAS TÁTICAS — Corpo a Corpo =====
-{g:'Armas Táticas',s:'cc',n:'Acha',c:1,k:3,d:'6+RA',tp:'Corte',x:'Corpo a Corpo · Alcance Adjacente · Duas Mãos',t:`Machado grande e pesado. Em crítico, deixa o inimigo Vulnerável por 1 rodada.`},
 {g:'Armas Táticas',s:'cc',n:'Bastão de Choque',c:1,k:1,d:'3+RA',tp:'Elétrico',x:'Corpo a Corpo · Alcance Adjacente · Uma Mão',t:`Em crítico, deixa o inimigo atordoado por 1 rodada.`},
 {g:'Armas Táticas',s:'cc',n:'Corrente',c:1,k:1,d:'4+RA',tp:'Impacto',x:'Corpo a Corpo · Alcance Adjacente · Uma Mão',t:`Pode ser usada para agarrar um alvo. Fornece +1d4 em testes para desarmar, derrubar e agarrar.`},
 {g:'Armas Táticas',s:'cc',n:'Espada',c:1,k:2,d:'4+RA',tp:'Corte',x:'Corpo a Corpo · Alcance Adjacente · Uma Mão',t:`Com uma mão causa 4; com as duas, 5. Se for Mestre em Briga e a empunhar com as duas mãos, recebe +5 de dano com ela.`},
@@ -773,7 +793,8 @@ const ITENS = [
 {g:'Armas Táticas',s:'dp',n:'Shuriken',c:1,k:2,d:'4+RB',tp:'Perfuração',x:'Disparo · Alcance Curto · Leve',t:`Pode gastar 1 PE para arremessar uma Shuriken adicional em um ataque (até metade do seu Físico extras). Cada kit vem com 20 Shurikens recuperáveis.`},
 {g:'Armas Táticas',s:'dp',n:'Submetralhadora',c:1,k:2,d:'8+RB',tp:'Balístico',x:'Disparo · Precisão 10 · Alcance Médio · Munição: Balas Curtas · Capacidade: 20 · Uma Mão',t:`Automática, empunhável com uma mão. Rajada dupla: ação completa e 2 PE para fazer 2 rajadas seguidas, cada uma com a penalidade normal de rajada.`},
 // ===== ARMAS PESADAS =====
-{g:'Armas Pesadas',s:'cc',n:'Montante',c:2,k:3,d:'6+RA',tp:'Corte',x:'Corpo a Corpo · Alcance Adjacente · Duas Mãos',t:`Espada enorme e pesada, de 1,5m de comprimento.`},
+{g:'Armas Pesadas',s:'cc',n:'Acha',c:2,k:3,d:'8+RA',tp:'Corte',x:'Corpo a Corpo · Alcance Adjacente · Duas Mãos',t:`Machado grande e pesado. Em crítico, deixa o inimigo Vulnerável por 1 rodada.`},
+{g:'Armas Pesadas',s:'cc',n:'Montante',c:2,k:3,d:'8+RA',tp:'Corte',x:'Corpo a Corpo · Alcance Adjacente · Duas Mãos',t:`Espada enorme e pesada, de 1,5m de comprimento. Golpe Pesado: ao atacar, você pode gastar uma ação completa no lugar da ação padrão; cada ataque feito assim causa 10 + RA de dano em vez de 8 + RA.`},
 {g:'Armas Pesadas',s:'dp',n:'Bazuca',c:3,k:3,d:'34+RB',tp:'Impacto',x:'Disparo · Precisão 13 · Alcance Médio · Munição: Foguete · Capacidade: 1 · Duas Mãos',t:`Causa dano no alvo e em todas as criaturas num raio de 3m; elas têm direito a Reflexos (DT 4 + valor de Mira do atirador) para reduzir à metade (exceto o alvo atingido diretamente). Pode ser disparada num ponto em alcance médio, sem teste de ataque e sem chance de errar (mas sem acertar ninguém diretamente). Recarregar exige uma ação de movimento.`},
 {g:'Armas Pesadas',s:'dp',n:'Lança-Chamas',c:3,k:2,d:'18+RB',tp:'Fogo',x:'Disparo · Precisão 7 · Alcance Curto · Munição: Combustível · Capacidade: 5 · Duas Mãos',t:`Atinge todas as criaturas em uma linha de 1,5m de largura com alcance curto; um único teste de ataque para todas. As criaturas atingidas sofrem dano normal e ficam Em Chamas.`},
 {g:'Armas Pesadas',s:'dp',n:'Metralhadora',c:2,k:2,d:'13+RB',tp:'Balístico',x:'Disparo · Precisão 11 · Alcance Médio · Munição: Balas Longas · Capacidade: 40, fita · Duas Mãos',t:`Arma automática. Exige Físico d12 ou maior, ou uma ação de movimento para apoiá-la em tripé; caso contrário, -2 passos nos ataques.`},
@@ -822,8 +843,6 @@ const ITENS = [
 {g:'Itens Gerais',n:'Capa de Chuva',c:1,k:2,t:`Protege de precipitações. Anula penalidades de percepção por chuva e tempestade e concede +1d6 em testes de ocultar.`},
 {g:'Itens Gerais',n:'Cicatrizante',c:1,k:1,d:'10+RB',tp:'Cura (PV)',x:'Ação padrão · gasta o item',t:`Spray com potente efeito cicatrizante. Gaste uma ação padrão e este item para curar 10 + RB PV em você ou em um ser adjacente.`},
 {g:'Itens Gerais',n:'Câmera',c:1,k:1,t:`Câmera pequena com adesivo, observa em 360°. Colocá-la exige ação de movimento e superfície lisa adjacente. Você pode fazer testes de Percepção até 18m dela (se for um aparelho eletrônico) sem nada à frente. Subir a categoria em 1 permite observar no escuro não paranormal. As gravações ficam salvas em um aparelho eletrônico à sua escolha.`},
-{g:'Itens Gerais',n:'Componentes Ritualísticos de (Elemento)',c:0,k:0.5,t:`Conjunto de objetos usados em rituais de um elemento entre Sangue, Morte, Conhecimento ou Energia (não existem componentes de Medo). São necessários para conjurar rituais do elemento (Afinidade dispensa). Energia: eletricidade, dispositivos tecnológicos, circuitos, fontes de calor e luz, pilhas, baterias, cabos, pólvora, moedas, dados, ímãs. Sangue: órgãos, carne, sangue, animais vivos, navalhas, agulhas, arame farpado, correntes, metal enferrujado, fluidos. Morte: ossos, dentes, cinzas, cabelo, cristais pretos, relógios, galhos e folhas secas, raízes, areia, poeira, Lodo. Conhecimento: escrituras, papéis, livros, pergaminhos, pedras preciosas, ouro, cordas, tecido, cristais brancos, vidro, máscaras, instrumentos de escrita. (Renomeie: Componentes Ritualísticos — ___.)`},
-{g:'Itens Gerais',n:'Contato Paranormal',c:0,k:0.5,t:`Um caderninho com símbolos em relevo, fotos no celular, notas musicais ou até cheiros e gostos específicos. Uma forma de usar um dos seus sentidos em contato com o símbolo do ritual para conjurá-lo. Para conjurar um ritual, você deve empunhar este item com uma das mãos. Utilizá-lo, como tocar algo com um instrumento musical, é junto da ação do ritual. (Carga 0,5 se for pequeno, como um caderninho; 1 se for maior.)`},
 {g:'Itens Gerais',n:'Corda',c:0,k:1,t:`Rolo de 10 metros de corda resistente. +1d6 em Atletismo para descer buracos/prédios; também amarra pessoas inconscientes etc.`},
 {g:'Itens Gerais',n:'Drone',c:2,k:2,t:`Veículo aéreo não tripulado, controlado por celular. Pode levar outro item de até 1 de carga (câmera, granada...). Alcance longo; exige uma ação de movimento por turno para ser guiado. Perceber o drone exige Percepção (DT 5 + 1 a cada 1,5m de altura). Pode seguir a regra opcional de Duração de Baterias (SaH, p. 39).`},
 {g:'Itens Gerais',n:'Equipamento de Escuta',c:1,k:1,t:`Receptor com alcance de 90m e três transmissores que captam sons em raio de 9m. Instalar demora alguns minutos e exige Crime DT 10 (o resultado é a DT para encontrá-lo). Instalar discretamente com gente presente é ação completa, exige Furtividade oposta à Percepção e aumenta a DT em +3.`},
@@ -848,9 +867,103 @@ const ITENS = [
 {g:'Itens Gerais',n:'Taser',c:1,k:1,d:'3+RA',tp:'Eletricidade',x:'Ação padrão · ser adjacente · bateria de 2 usos',t:`O alvo sofre 3 + RA de eletricidade e fica atordoado por uma rodada (Tenacidade DT Mira evita). A bateria dura dois usos.`},
 {g:'Itens Gerais',n:'Traje de Mergulhador',c:1,k:2,t:`Roupa impermeável com tanque e máscara (1 hora de oxigênio). +1d6 em testes de resistência contra efeitos ambientais e resistência a dano químico 2. Ocupa o espaço de uma vestimenta; vestir/despir é ação completa.`},
 {g:'Itens Gerais',n:'Traje Espacial',c:2,k:5,t:`Suprimento de água e oxigênio de oito horas; protege contra raios cósmicos e rochas errantes. +1d8 em testes de resistência contra efeitos ambientais e resistência a dano químico 12. Ocupa o espaço de uma vestimenta; vestir/despir demora duas rodadas.`},
-{g:'Itens Gerais',n:'Traje Hazmat',c:1,k:2,t:`Roupa impermeável que impede contato com materiais tóxicos. +1d6 em testes de resistência contra efeitos ambientais e resistência a químico 6.`}
+{g:'Itens Gerais',n:'Traje Hazmat',c:1,k:2,t:`Roupa impermeável que impede contato com materiais tóxicos. +1d6 em testes de resistência contra efeitos ambientais e resistência a químico 6.`},
+// ===== ITENS PARANORMAIS / ARMADILHAS / VENENOS / REMÉDIOS =====
+{g:'Itens Paranormais',n:'Amarras de (Elemento)',c:2,k:1,t:`Cordas ou correntes feitas de um elemento paranormal específico, preparadas para imobilizar criaturas do Outro Lado vulneráveis ao elemento que as compõe. Podem ser usadas de três formas.
+Armadilha: você gasta as amarras, uma ação completa e 2 PE para preparar uma armadilha de 3x3m. Uma criatura que atravesse o espaço pela primeira vez em seu turno faz um teste de Reflexos (DT (Sobrevivência ou Ocultismo)); se falhar, fica Imóvel até o fim da cena. Mesmo se passar, o espaço ocupado pela armadilha conta como terreno difícil.
+Laçar: você gasta uma ação padrão e 1 PE e escolhe uma criatura em alcance curto. Se falhar num teste de Coragem (DT (Mira ou Ocultismo)), a criatura fica Paralisada até o início do próximo turno dela, quando pode repetir o teste. Manter a criatura enlaçada custa 1 PE por rodada.
+Braçadeiras: você gasta uma ação de movimento para enrolar as amarras nos braços. Contra criaturas do elemento oprimido pelo das amarras, você recebe +2 de RD ao bloquear e seus ataques desarmados causam +2 de dano do elemento das amarras.`},
+{g:'Itens Paranormais',n:'Armazenador (Elemento) Paranormal',c:2,k:1,t:`Um objeto como uma caixa ou bolsa, com símbolos e adornos de uma entidade específica. Se o armazenador for do elemento que oprime o do objeto guardado, o objeto fica contido: não pode ser usado e não aplica seus efeitos, como os preços de maldições. Para usar um objeto amaldiçoado que esteja guardado, é preciso deixá-lo fora do armazenador por 2 cenas para que recupere seus poderes (durante esse período, você sofre os preços das maldições). Relíquias aplicam seus efeitos assim que tiradas do armazenador. Itens amaldiçoados guardados ocupam 3 de Carga a menos (mínimo 0).
+Um armazenador de Medo é capaz de conter objetos de todos os elementos (exceto Medo) de categoria até 3.`},
+{g:'Itens Paranormais',n:'Barreira Repulsora de (Elemento)',c:2,k:1,t:`Diversos itens que projetam uma barreira fixa, que absorve parte dos efeitos do elemento da camada. Pode ser colocada no chão e ativada com uma ação padrão e 2 PE, expandindo-se em uma esfera de 3m de raio: todos na área recebem +1d6 em testes de resistência contra efeitos do elemento da barreira. A cada rodada, um personagem na área deve gastar uma ação de movimento e 1 PE para mantê-la ativa; se ninguém a reativar até o fim da rodada, ela se desativa.`},
+{g:'Itens Paranormais',n:'Bracelete Impetuoso de (Elemento)',c:2,k:1,t:`Um bracelete projetado para conter um fragmento de um dos elementos principais do Outro Lado; parece guiar seus golpes para causar maior estrago no inimigo. Enquanto o vestir, você pode gastar 2 PE para receber +1d6 no seu próximo teste de ataque contra um ser do elemento oprimido pelo elemento do bracelete.`},
+{g:'Itens Paranormais',n:'Capacete de Manipulação de Memória',c:3,k:1,t:`Um capacete modificado com aparelhos e ornamentos dourados. Você gasta 3 PE para ativá-lo, e ele deve ser mantido vestido pelo usuário ou pelo alvo por 2 rodadas. Quem estiver com o capacete tem as memórias alteradas, esquecendo para sempre encontros com criaturas e manifestações paranormais, e recupera 3 pontos de Sanidade. O alvo só recupera as memórias se enlouquecer.`},
+{g:'Itens Paranormais',n:'Catalisadores (Elemento)',c:1,k:0.5,t:`Componentes ritualísticos que já foram alterados por exposição paranormal e por isso são mais eficientes. Ao contrário de componentes comuns, um catalisador é consumido ao ser usado, aplicando seus efeitos ao ritual em questão até o fim da cena. Existe um tipo para cada elemento. Você precisa estar empunhando o catalisador para usá-lo e só pode usar um catalisador por ritual. Por sua natureza, catalisadores não podem ser improvisados, como pela ação Improvisar Componentes.
+Ampliador: aumenta o alcance do ritual em um passo (de curto para médio, de médio para longo ou de longo para extremo) ou dobra a área de efeito.
+Perturbador: a DT para resistir ao ritual aumenta em +2.
+Potencializador: o dano do ritual aumenta em +3.
+Prolongador: a duração do ritual dobra. Não funciona para rituais instantâneos ou sustentados.
+Conjurar um ritual envolve manipular um componente ritualístico: um objeto conectado, em forma e natureza, à Entidade que se tenta alcançar. Com o uso, alguns componentes sofrem alterações causadas pela exposição prolongada ao paranormal; elas os fragilizam, mas permitem que sejam consumidos em troca de uma pequena alteração no ritual. Exemplos de catalisadores e de como são consumidos:
+Sangue: larvas, vermes e outras pequenas criaturas vivas consumidas pelo Sangue; coração coberto de arame farpado inexplicavelmente batendo; faca usada por um serial killer famoso. Ao ser consumido, derrete e vira uma gosma vermelha e pulsante, inútil.
+Morte: crânio pequeno com Lodo escorrendo; cinzas de um luzidio; fruto paranormal apodrecido; raízes mortas entrelaçadas que se movem; um filhote aprisionado em uma gaiola. Ao ser consumido, envelhece rapidamente até se desintegrar em pó.
+Conhecimento: pergaminho ancestral com sigilos de Conhecimento; joias paranormais encontradas na pirâmide de um faraó; balança dourada que nunca se move; um Existido inofensivo aprisionado. Ao ser consumido, é inexistido da Realidade.
+Energia: cubo mágico metálico caótico que não para de se embaralhar; cartas de baralho que mudam toda vez que você olha; uma brasa que nunca se apaga; celular com um vírus paranormal; uma pequena bola de plasma que nunca desliga. Ao ser consumido, vibra até implodir e se tornar inútil.`},
+{g:'Itens Paranormais',n:'Componentes Ritualísticos de (Elemento)',c:0,k:0.5,t:`Um conjunto de objetos utilizados em rituais de um elemento entre Sangue, Morte, Conhecimento ou Energia (não existem componentes ritualísticos de Medo). Componentes ritualísticos são necessários para a conjuração de rituais do elemento em questão.
+Energia: eletricidade, dispositivos tecnológicos (celulares, computadores etc.), circuitos eletrônicos, fontes de calor e luz, pilhas, baterias, cabos de cobre e prata, pólvora, moedas, dados, ímãs…
+Sangue: órgãos, carne, sangue, animais vivos (para sacrifício), navalhas, agulhas, arame farpado, correntes, metal enferrujado, fluídos corporais…
+Morte: ossos, dentes, cinzas, fios de cabelo, cristais pretos, relógios, galhos secos, folhas secas, plantas mortas, raízes, areia, poeira, Lodo…
+Conhecimento: escrituras, papéis, livros, pergaminhos, pedras preciosas, ouro, cordas, tecido, cristais brancos, vidro, máscaras, instrumentos de escrita…`},
+{g:'Itens Paranormais',n:'Contato Paranormal',c:0,k:0.5,t:`Um caderninho com símbolos em relevo, fotos no celular, notas musicais ou até cheiros e gostos específicos. Uma forma de usar um dos seus sentidos em contato com o símbolo do ritual para conjurá-lo. Para conjurar um ritual, você deve empunhar este item com uma das mãos. Utilizá-lo, como tocar algo com um instrumento musical, é junto da ação do ritual.`},
+{g:'Itens Paranormais',n:'Câmera de Aura Paranormal',c:2,k:1,t:`Esta câmera amaldiçoada com Energia possui sigilos de Conhecimento para capturar auras paranormais. Tirar uma foto custa uma ação padrão e 1 PE. As fotos são instantâneas e revelam a presença de auras paranormais em pessoas e objetos; as auras têm a cor associada ao elemento.
+Lente de Revelação (modificação). Uma câmera de aura equipada com a lente permite ver seres invisíveis e incorpóreos e ignorar a camuflagem deles. Além disso, você pode gastar uma ação padrão e 1 PE para fotografar uma criatura em alcance curto: até o fim da cena, ela perde Invisibilidade e Camuflagem e se torna corpórea (Coragem DT (Ocultismo) evita).`},
+{g:'Itens Paranormais',n:'Distração Sobrenatural (Elemento)',c:2,k:1,t:`Dispositivos sonoros e chamativos, adornados com componentes do elemento escolhido. Você ativa o item com 2 PE e uma ação padrão. Todas as criaturas do mesmo elemento do item em alcance médio do ponto de ativação fazem um teste de Percepção (DT (Artes ou Ocultismo)); se falharem, percebem o item e ficam Fascinadas até o fim do próximo turno delas. Criaturas que passarem ficam imunes ao item até o fim da cena.`},
+{g:'Itens Paranormais',n:'Emissor de Pulsos Paranormais',c:2,k:1,t:`Esta pequena caixa coberta de sigilos foi desenvolvida como “isca” de criaturas paranormais. Ativá-la custa uma ação completa e 1 PE. A caixa emite um pulso de um elemento definido por quem a ativa, que atrai criaturas do mesmo elemento e afasta criaturas do elemento oposto. As criaturas afetadas têm direito a um teste de Coragem (DT (Ocultismo)) para evitar o efeito.`},
+{g:'Itens Paranormais',n:'Escuta de Ruídos Paranormais',c:2,k:1,t:`Este microfone funciona como um aparato espião, com a diferença de que capta ruídos paranormais. Ativar a escuta custa uma ação completa e 2 PE e faz com que ela grave por até 24 horas. Ouvir a gravação fornece +1d6 em testes de Ocultismo para identificar a criatura.`},
+{g:'Itens Paranormais',n:'Fone de Detecção Inconsciente',c:2,k:1,t:`Um fone de fios e luzes roxas, que parece se conectar ao subconsciente de quem o veste. Você gasta 2 PE para ativá-lo e 1 PE por cena para mantê-lo ligado. Enquanto dorme, você ainda sente os arredores e pode fazer reações (ao reagir, acorda imediatamente), além de sentir ações próximas e manifestações paranormais em alcance curto, e os elementos envolvidos. Se estiver Cego, o fone remove a condição Desprevenido dentro do alcance.`},
+{g:'Itens Paranormais',n:'Fórmulas Paranormais',c:1,k:1,t:`Categoria varia: I para rituais de 1° círculo, II para 2° e assim por diante.
+Poções e outros consumíveis com efeitos de rituais que tenham “Você” como alvo. A categoria do item é I para rituais de 1° círculo, II para 2° e assim por diante. Tomar uma Fórmula Paranormal gasta uma ação padrão e conta como se você tivesse falhado no ritual, perdendo Sanidade (o dobro se for de Medo), mas ativa o efeito base do ritual. Fórmulas podem ser carregadas no Aplicador de Medicamentos. O item segue as regras de Vício e Overdose de Remédios, e o risco é igual ao círculo do ritual (de 4° círculo, você fica viciado).`},
+{g:'Itens Paranormais',n:'Injeção Potencializadora',c:1,k:1,t:`Uma injeção com um composto de medicamentos convencionais e elementos do Outro Lado, que amplifica os sistemas do corpo conforme o elemento escolhido. Com uma ação de movimento e 2 PE, você aplica a injeção em um ser adjacente ou em si mesmo, que recebe +1d4 em testes do atributo ligado ao elemento: Sangue e Morte, Físico; Conhecimento, Mente; Energia, Presteza; Medo, Espírito. A cada turno iniciado com o efeito, o personagem gasta 1 PE para mantê-lo. O efeito dura a cena. Uso único.`},
+{g:'Itens Paranormais',n:'Ligação Direta Infernal',c:2,k:1,t:`Um amontoado de fios de cobre contaminados com Sangue e Energia. Com uma ação completa, você liga um veículo automaticamente: os fios invadem os controles e o animam de forma paranormal. O veículo recebe RD 10 (cumulativa com a que já tiver) e imunidade a Sangue, e você recebe +1d6 em testes de Condução para conduzi-lo. Nesse estado, porém, o veículo tenta causar o máximo de confusão possível: as consequências de qualquer falha em Condução são amplificadas a critério do Mestre (em geral, qualquer dano ou penalidade causado por uma falha é dobrado). Remover a ligação é uma ação completa.`},
+{g:'Itens Paranormais',n:'Manto Ritualístico',c:2,k:1,t:`Uma vestimenta preparada para amplificar um ritual à sua escolha e servir de canalizador. Escolha um ritual; enquanto vestir o manto, ao conjurá-lo você pode aumentar seu custo em 2 PE para amplificá-lo, recebendo +3 em rolagens de dano e cura. Se o ritual for sustentado, o custo de sustentação também aumenta em 1 PE. Além disso, o manto conta como os componentes ritualísticos do ritual escolhido, sem precisar ser manipulado com as mãos. Vestir ou retirar o manto é uma ação completa.`},
+{g:'Itens Paranormais',n:'Medidor de Condição Vertebral',c:2,k:1,t:`Este item grotesco é uma coluna vertebral sustentada por Lodo de Morte e revestida de cabos e fios de Energia. Para usá-lo, é preciso conectá-lo à coluna, um procedimento que exige uma ação completa e causa agonia profunda, deixando o usuário Atordoado por uma rodada. O medidor conta como uma vestimenta que fornece +1d4 em Tenacidade. Uma vez conectado, ele se ilumina em cores que vão do vermelho, na base, passando por amarelo no centro, até verde no topo, indicando a saúde do usuário (verde é a melhor condição). Se o usuário estiver sob um efeito paranormal, o item emite pulsos de luz lilás. As informações do item concedem +1d6 em testes de Medicina feitos para auxiliar o usuário.`},
+{g:'Itens Paranormais',n:'Medidor de Estabilidade da Membrana',c:2,k:1,t:`Um dispositivo complexo, composto de diversos medidores (temperatura, campo magnético, dilatação temporal…). Um agente treinado em Ocultismo pode usá-lo para avaliar o estado da Membrana em uma área, o que indica a chance de uma entidade se manifestar nela. Um ambiente com valores racionais e constantes ao longo de algumas horas dificilmente originará uma criatura ou manifestação perigosa; se as leituras apresentarem dados inexplicáveis ou grandes variações, o lugar pode conter uma entidade. É um bom indicativo, mas não dá respostas definitivas: um ambiente com a Membrana danificada ainda pode não ter sido afetado.`},
+{g:'Itens Paranormais',n:'Pen Drive Selado',c:2,k:0.5,t:`Este dispositivo é gravado com sigilos dourados de Conhecimento. Graças à proteção deles, o pen drive não pode ser invadido ou afetado por rituais, seres e efeitos de Energia. Isso mantém os arquivos protegidos e permite usá-lo para invadir outros dispositivos sem ser contaminado pela entidade. Existem outros modelos de dispositivos selados, como HDs externos e celulares.`},
+{g:'Itens Paranormais',n:'Pulseira de Respostas Paranormais',c:2,k:1,t:`Um esfigmomanômetro alterado para lidar com as respostas do corpo ao paranormal. Ao encontrar uma criatura paranormal, como reação e gastando 2 PE, você recebe +1d6 no teste de Coragem contra a Presença Perturbadora dela.`},
+{g:'Itens Paranormais',n:'Pé de Morto',c:2,k:1,t:`Botas macabras costuradas com a pele de cadáveres amaldiçoados pela Morte. Com essa matéria grotesca, elas mantêm os passos do usuário leves e quase inaudíveis, como os de um fantasma. Você recebe +1d6 em Furtividade e, em cenas de furtividade, qualquer ação chamativa que envolva apenas se mover (como correr ou saltar) aumenta a visibilidade em apenas +1.`},
+{g:'Itens Paranormais',n:'Valete da Salvação',c:1,k:0.5,t:`Assim como um valete servia a seus senhores, esta carta (um valete de ouros pintado de dourado e coberto de sigilos de Conhecimento) serve para salvá-lo de uma situação complicada. Para usá-la, você gasta uma ação padrão para atirá-la ao ar. Ela voa em alcance médio, aponta a melhor rota de fuga dentro dele e deixa de existir. Se for gasta em uma cena de perseguição, você é bem-sucedido em uma ação de Cortar Caminho.`},
+{g:'Armadilhas',n:'Alarme',c:1,k:2,t:`A armadilha emana um som alto e irritante. Seres até 6m ficam Surdos por 1 rodada e seres em alcance longo escutam o som claramente.`},
+{g:'Armadilhas',n:'Arataca',c:1,k:2,t:`Uma armadilha de caça, ativada por pressão. A vítima sofre 6 de dano de corte, fica Lenta até se curar desse dano e Imóvel enquanto estiver presa (Reflexos DT (Sobrevivência ou Crime) reduz o dano à metade e evita as condições). Soltar-se exige um teste de Físico (DT 7); cada falha causa 3 de dano de corte à vítima.`},
+{g:'Armadilhas',n:'Atordoante',c:1,k:2,t:`A armadilha emana uma luz desnorteante. A vítima fica Atordoada por 1 rodada e Ofuscada pela cena (Tenacidade DT (Sobrevivência ou Crime) reduz para Ofuscada por 1 rodada).`},
+{g:'Armadilhas',n:'Espinhos',c:1,k:2,t:`Estacas afiadas de madeira ou bambu. A vítima sofre 20 de dano de perfuração (Reflexos DT (Sobrevivência ou Crime) reduz à metade).`},
+{g:'Armadilhas',n:'Explosivo',c:1,k:2,t:`Uma mina terrestre ou explosivo improvisado remoto. A vítima e os seres adjacentes à armadilha sofrem 13 de dano de impacto e são empurrados 3m para longe do centro da área (Reflexos DT (Sobrevivência ou Crime) reduz à metade e evita o empurrão).`},
+{g:'Armadilhas',n:'Fumaça',c:1,k:2,t:`Emite uma nuvem de fumaça espessa que afeta a área. Seres até 1,5m têm Camuflagem Parcial e seres a partir de 3m têm Camuflagem Total. Os efeitos duram até o fim da cena.`},
+{g:'Armadilhas',n:'Laço',c:1,k:2,t:`A vítima é içada de ponta-cabeça, ficando Agarrada e Caída (Reflexos DT (Sobrevivência ou Crime) evita). Uma criatura agarrada pode se soltar com uma ação padrão e um teste de Acrobacia (DT (Sobrevivência ou Crime)).`},
+{g:'Armadilhas',n:'Rede',c:1,k:2,t:`Seres na área ficam Enredados e Imóveis. Uma vítima pode se libertar com uma ação completa e um teste de Acrobacia (DT (Sobrevivência ou Crime)). A área ocupada pela rede é considerada terreno difícil. Nesta armadilha, você escolhe quantos seres precisam estar na área para ativá-la.`},
+{g:'Venenos',n:'Acônito',c:1,k:1,x:`Tipo: Ingestão / Ferimento · DT: Tenacidade 10`,t:`4 de dano e Fraco por 1d4 rodadas (apenas 1 rodada se passar).`},
+{g:'Venenos',n:'Alprostadil',c:1,k:1,x:`Tipo: Contato · DT: Tenacidade 10`,t:`Dobra o efeito de Sangrando (perde 4 PV em vez de 2). A próxima vez que dormir, a vítima acorda Fatigada.`},
+{g:'Venenos',n:'Amiodarona',c:0,k:1,x:`Tipo: Ingestão · DT: Tenacidade 7`,t:`–2 passos em testes de resistência pela cena (–1 passo se passar).`},
+{g:'Venenos',n:'Arsênico',c:0,k:1,x:`Tipo: Ingestão · DT: Tenacidade 7`,t:`6 de dano por rodada por 1d4 rodadas.`},
+{g:'Venenos',n:'Atracúrio',c:1,k:1,x:`Tipo: Ferimento · DT: Tenacidade 10`,t:`Asfixiado por 1d4 rodadas.`},
+{g:'Venenos',n:'Batracotoxina',c:3,k:1,x:`Tipo: Contato · DT: Tenacidade 16`,t:`Fica Confuso (Atordoado por 1 rodada se passar).`},
+{g:'Venenos',n:'Beladona',c:1,k:1,x:`Tipo: Ferimento · DT: Tenacidade 10`,t:`Fica Fraco (Vulnerável se passar).`},
+{g:'Venenos',n:'Cianeto',c:3,k:1,x:`Tipo: Ingestão / Inalação · DT: Tenacidade 16`,t:`Paralisado e 19 de dano por 1d4 rodadas (apenas 1 rodada, sem a condição, se passar).`},
+{g:'Venenos',n:'Cicuta de Sócrates',c:2,k:1,x:`Tipo: Ingestão · DT: Tenacidade 13`,t:`Paralisado 15 minutos após a ingestão e por mais 1d3 rodadas ao resistir.`},
+{g:'Venenos',n:'Clorofórmio',c:0,k:1,x:`Tipo: Inalação · DT: Tenacidade 7`,t:`Inconsciente por 1 rodada (Enjoado se passar).`},
+{g:'Venenos',n:'Curare',c:2,k:1,x:`Tipo: Ferimento · DT: Tenacidade 13`,t:`Imóvel por 1d6 rodadas (Lento se passar).`},
+{g:'Venenos',n:'Dobutamina',c:2,k:1,x:`Tipo: Ferimento · DT: Tenacidade 13`,t:`Fraco e Desprevenido por 1d4 rodadas (Vulnerável por 1 rodada se passar).`},
+{g:'Venenos',n:'Estricnina',c:2,k:1,x:`Tipo: Ferimento · DT: Tenacidade 13`,t:`12 de dano por rodada por 2d4 rodadas (metade do dano se passar).`},
+{g:'Venenos',n:'Gel Peçonhento',c:2,k:1,x:`Tipo: Ferimento / Contato · DT: Tenacidade 13`,t:`Deixa o alvo Alquebrado (se passar, apenas encerra o sangramento do alvo na hora).`},
+{g:'Venenos',n:'Inseticida',c:0,k:1,x:`Tipo: Inalação · DT: Tenacidade 7`,t:`Enjoado por 1d3 rodadas.`},
+{g:'Venenos',n:'Insulina',c:1,k:1,x:`Tipo: Ferimento · DT: Tenacidade 10`,t:`Alquebrado até o fim da cena.`},
+{g:'Venenos',n:'Lixo Químico / Toxina',c:2,k:1,x:`Tipo: Contato · DT: Tenacidade 13`,t:`Fica Debilitado (Fraco se passar).`},
+{g:'Venenos',n:'Penicilina Benzatina',c:4,k:1,x:`Tipo: Ferimento · DT: Tenacidade 19`,t:`Cai Inconsciente com 0 PV (Exausto por 1d3 rodadas se passar).`},
+{g:'Venenos',n:'Peçonha Debilitante',c:2,k:1,x:`Tipo: Ferimento · DT: Tenacidade 13`,t:`–2 passos em testes de ataque por 1d6 rodadas (–1 passo por 1d3 rodadas se passar).`},
+{g:'Venenos',n:'Peçonha Fraca',c:1,k:1,x:`Tipo: Ferimento · DT: Tenacidade 10`,t:`6 de dano (metade se passar).`},
+{g:'Venenos',n:'Peçonha Mortal',c:4,k:1,x:`Tipo: Ferimento · DT: Tenacidade 19`,t:`A vítima cai com 0 PV (se passar, sofre 32 de dano). Criaturas sofrem metade do dano se passarem e o dano completo se falharem.`},
+{g:'Venenos',n:'Peçonha Potente',c:2,k:1,x:`Tipo: Ferimento · DT: Tenacidade 13`,t:`6 de dano por rodada por 1d4 rodadas (metade do dano se passar).`},
+{g:'Venenos',n:'Ricina',c:4,k:1,x:`Tipo: Ingestão · DT: Tenacidade 19`,t:`Morre 3 dias após a ingestão (Exausto e Debilitado por 3 dias se passar).`},
+{g:'Venenos',n:'Sonífero',c:2,k:1,x:`Tipo: Ingestão · DT: Tenacidade 13`,t:`Fica Inconsciente (Enjoado por 1 rodada se passar).`},
+{g:'Venenos',n:'Tetrodotoxina',c:4,k:1,x:`Tipo: Contato · DT: Tenacidade 19`,t:`Paralisado (Fatigado e Lento se passar) por 1d3 rodadas. Fica Morrendo se falhar por 3 ou mais.`},
+{g:'Venenos',n:'Tranquilizante (Veneno)',c:1,k:1,x:`Tipo: Ferimento · DT: Tenacidade 10`,t:`Paralisado (Enredado por 1d3 rodadas se passar).`},
+{g:'Remédios',n:'Adrenalina',c:2,k:1,x:`Risco 3`,t:`Fornece uma ação de movimento extra até o fim da cena.`},
+{g:'Remédios',n:'Analgésico',c:1,k:1,x:`Risco 1`,t:`Fornece cura acelerada 2 por 1d4 rodadas.`},
+{g:'Remédios',n:'Anestesia',c:2,k:1,x:`Risco 2`,t:`+1d4 em testes de Físico e Presteza pela cena.`},
+{g:'Remédios',n:'Anti-inflamatório',c:1,k:1,x:`Risco 1`,t:`Reduz reações inflamatórias, diminuindo dor e inchaço. Fornece 6 PV temporários.`},
+{g:'Remédios',n:'Antibiótico',c:1,k:1,x:`Risco 1`,t:`Remove a condição Enjoado e fortalece a imunidade contra vírus e bactérias: +1d6 no próximo teste de Tenacidade contra os efeitos de uma doença feito até o fim do dia e em testes para evitar a condição Enjoado até o fim da cena. A critério do Mestre, pode funcionar contra outras condições causadas por náuseas e vômitos.`},
+{g:'Remédios',n:'Antitérmico',c:1,k:1,x:`Risco 1`,t:`Reduz reações febris perigosas e alivia dores de cabeça, permitindo um novo teste contra uma condição mental que o usuário esteja sofrendo. Só funciona uma vez por cena.`},
+{g:'Remédios',n:'Antiviral',c:1,k:1,x:`Risco 1`,t:`Reduz em I o estágio de qualquer doença.`},
+{g:'Remédios',n:'Antídoto',c:2,k:1,x:`Risco 2`,t:`Ajuda o corpo a lidar com venenos. Fornece +1d6 no próximo teste de Tenacidade contra os efeitos de um veneno até o fim do dia. Um antídoto feito para um veneno específico, em vez disso, remove completamente o veneno. Se usado por quem já está envenenado, reduz os efeitos à metade.`},
+{g:'Remédios',n:'Broncodilatador',c:2,k:1,x:`Risco 2`,t:`Auxilia na respiração. Fornece +1d6 em testes para evitar as condições Asfixiado ou Fatigado feitos até o fim do dia.`},
+{g:'Remédios',n:'Calmante',c:2,k:1,x:`Risco 1`,t:`+1d4 em testes de Mente e Espírito pela cena.`},
+{g:'Remédios',n:'Coagulante',c:1,k:1,x:`Risco 2`,t:`Aumenta a capacidade de coagulação: até o fim do dia, ao rolar para encerrar Sangrando, a condição termina com 1 ou 2 no dado. Se usado junto com um teste de Medicina para remover a condição Morrendo, fornece +1d6 nesse teste.`},
+{g:'Remédios',n:'Genérico',c:1,k:1,x:`Risco 1`,t:`Remove uma condição de sentidos qualquer.`},
+{g:'Remédios',n:'Morfina',c:2,k:1,x:`Risco 3`,t:`Cura 12 PV.`},
+{g:'Remédios',n:'Pomada de Queimadura',c:1,k:1,x:`Risco 0`,t:`Cura 8 PV, apenas de danos de Fogo e Químico.`},
+{g:'Remédios',n:'Psiquiátrico',c:2,k:1,x:`Risco 3`,t:`Remove uma condição mental ou de medo qualquer.`},
+{g:'Remédios',n:'Suplemento Energético',c:1,k:1,x:`Risco 1`,t:`Remove uma condição de fadiga qualquer.`},
+{g:'Remédios',n:'Tranquilizante',c:1,k:1,x:`Risco 2`,t:`Recupera 4 de Sanidade.`},
 ];
-const ITEM_GRUPOS = ['Armas Simples','Armas Táticas','Armas Pesadas','Proteções','Munição','Acessórios','Explosivos','Itens Gerais'];
+const ITEM_GRUPOS = ['Armas Simples','Armas Táticas','Armas Pesadas','Proteções','Munição','Acessórios','Explosivos','Itens Gerais','Itens Paranormais','Armadilhas','Venenos','Remédios'];
 
 const CAT_ROMANO = ['0','I','II','III','IV'];
 function profItem(i){
@@ -865,7 +978,7 @@ function notasDe(i){
   const p = profItem(i); if(p) l.push('Proficiência: '+p[1]);
   return l.join('\n') + '\n\n' + i.t;
 }
-function ehNotaItemAuto(t){ return ITENS.some(i=>notasDe(i)===t); }
+function ehNotaItemAuto(t){ t = stripMods(t); return ITENS.some(i=>notasDe(i)===t); }
 function avisoProf(i){
   const p = profItem(i);
   if(p && !store[p[0]]) aviso('Atenção: "'+i.n+'" exige a proficiência '+p[1]+', que você não marcou.');
@@ -923,6 +1036,216 @@ function munPackUI(storeKey, st, persist){
   box.sync();
   return box;
 }
+// ---- Modificações, Maldições e Defeitos (aplicados automaticamente nos itens e ataques) ----
+// s: arma · fogo · prot · mun · gran · acess · arm   |   t: texto   |   a: texto da versão Avançada   |   e: elemento (maldições)   |   cp: contraparte (defeitos)
+const MODDATA = {"mods":[{"n":"Certeira","s":"arma","t":"Fabricada para ser mais precisa e balanceada, a arma fornece +1d4 nos testes de ataque.","a":"o bônus muda para +1d6 nos testes de ataque."},{"n":"Conjuradora","s":"arma","t":"A arma possui sigilos ritualísticos gravados em sua superfície e é feita/adornada com materiais vinculados a um determinado elemento. Escolha um elemento. Se estiver empunhando a arma ao conjurar um ritual do elemento escolhido, ela conta como um componente ritualístico e contato paranormal de rituais do tipo Maldição e você não precisa gesticular com uma mão livre. Rituais que adicionem modificações, não podem incluir essa.","a":"o primeiro ritual do elemento escolhido que você conjurar por cena com a arma empunhada custa –1 PE (mínimo 1)."},{"n":"Cruel","s":"arma","t":"A arma possui lâmina especialmente afiada ou foi fabricada com materiais mais densos, aumentando seu dano em +2.","a":"o bônus muda para +4."},{"n":"Discreta","s":"arma","t":"A arma possui modificações para ocupar menos espaço e chamar menos a atenção. Se for uma arma de fogo, pode ser desmontável, se for um bastão pode ser retrátil, se for uma espada, pode ter a lâmina dobrável e assim por diante. Reduz o número de carga ocupados em 1, fornece +1d6 em testes de Crime para ser ocultada e permite que você faça esse teste mesmo que não seja treinado na perícia.","a":"reduz a Carga em 2 (mínimo 0) e o bônus em Crime muda para +1d8."},{"n":"Estendida","s":"arma","t":"A arma é equipada com uma corda, tiras e estrutura estendidas, permitindo disparos a uma maior distância. O alcance da arma é aumentado de Curto para Médio, e de Médio para Longo.","a":"o alcance aumenta em dois passos."},{"n":"Lanterna Acoplável","s":"arma","t":"A arma possui uma pequena lanterna acoplada, capaz de iluminar locais escuros. A lanterna projeta um cone de luz de 6 metros e elimina a penalidade por escuridão. Ligar ou desligar a lanterna é uma ação de movimento. Só pode ser aplicado em armas de disparo de duas mãos e pode ser desacoplada para se tornar uma Lanterna Tática.","a":"o cone de luz passa a 9m e, com uma ação de movimento, você pode mirar a luz nos olhos de um ser em alcance curto, deixando-o Ofuscado por 1 rodada (imune pelo resto da cena)."},{"n":"Marcial","s":"arma","t":"Escolha uma manobra; a arma foi adaptada para aprimorar essa manobra, concedendo um bônus de +1d4. Você pode aplicar essa modificação a outras manobras também. Apenas armas corpo a corpo.","a":"o bônus muda para +1d6 e vale para todas as manobras escolhidas."},{"n":"Perigosa","s":"arma","t":"A arma possui lâmina afiada como uma navalha ou foi fabricada com materiais maciços. Seja como for, seus golpes possuem um impacto terrível. Para tirar um crítico, deve tirar 5+ em dois dados ao invés de 6+.","a":"além do crítico com 5+ nos dois dados, os acertos críticos causam +2 de dano."},{"n":"Reconfortante","s":"arma","t":"Esta arma foi criada para um único propósito, encaixar perfeitamente em seu dono, gerando o mínimo esforço do mesmo para sua utilização. Ao adquirir está modificação, o ser deve escolher uma de suas habilidades que pode ser feita ao realizar um ataque ou ao utilizar a ação agredir, como Ataque de Oportunidade e Golpe Decisivo. O custo de PE para utilizar está habilidade é diminuído em 1 (mínimo 1, não cumulativo com outras fontes). Está modificação conta como 2, para efeitos de categoria.","a":"o custo de PE da habilidade escolhida é diminuído em 2 (mínimo 1)."},{"n":"Resistente","s":"arma","t":"A arma é fabricada com materiais mais robustos, ganhando +10 PV e +5 de RD.","a":"o bônus muda para +20 PV e +10 de RD."},{"n":"Tática","s":"arma","t":"A arma possui cabo texturizado, bandoleira e outros acessórios que facilitam seu manuseio. Você pode sacar a arma como uma ação livre.","a":"uma vez por rodada você também pode guardar a arma e sacar outra com Tática como ação livre."},{"n":"Versátil","s":"arma","t":"A arma ganha um gume ou pique extra, assim recebendo um tipo de dano adicional, podendo ser completamente substituído de acordo com a vontade do personagem ou até optar para que o dano se torne metade/metade, por exemplo, uma Alabarda com essa modificação pode desferir dano de corte, perfuração ou metade corte e metade perfuração. Não pode ser Balístico.","a":"a arma recebe dois tipos de dano adicionais e você pode trocar o tipo de dano como ação livre."},{"n":"Alongada","s":"fogo","t":"Com um cano mais longo, que aumenta a precisão dos disparos, a arma fornece +1d4 nos testes de ataque.","a":"o bônus muda para +1d6 nos testes de ataque."},{"n":"Calibre Grosso","s":"fogo","t":"A arma é modificada para disparar munição de maior calibre, aumentando seu dano em +2.","a":"o bônus muda para +4. Armas com esta modificação precisam usar munição específica de calibre grosso. Munição de calibre grosso possui o mesmo custo em categoria de munição normal, mas um pacote contém metade dos tiros (arredondada para cima até o múltiplo de 5) e ela não pode ser usada em armas normais."},{"n":"Compensador","s":"fogo","t":"Apenas para armas automáticas. Um sistema de amortecimento reduz o coice da arma, anulando a penalidade em testes de ataque por disparar rajadas. Além disso, cada rajada gasta 2 tiros em vez de 3.","a":"além do efeito normal, a arma fornece +1d4 nos testes de ataque de rajada."},{"n":"Conjurador","s":"fogo","t":"A arma possui sigilos ritualísticos gravados em sua superfície e é feita/adornada com materiais vinculados a um determinado elemento. Escolha um elemento. Se estiver empunhando a arma ao conjurar um ritual do elemento escolhido, ela conta como um componente ritualístico e contato paranormal de Maldição e você não precisa gesticular com uma mão livre. Rituais que adicionem modificações, não podem incluir essa.","a":"o primeiro ritual do elemento escolhido que você conjurar por cena com a arma empunhada custa –1 PE (mínimo 1)."},{"n":"Discreta","s":"fogo","t":"A arma possui modificações para ocupar menos espaço e chamar menos atenção. Se for uma arma de fogo, pode ser desmontável, se for um bastão pode ser retrátil, se for uma espada, pode ter a lâmina dobrável e assim por diante. Reduz o número de carga ocupado em 1, fornece +1d6 em testes de Crime para ser ocultada e permite que você faça esse teste mesmo que não seja treinado na perícia.","a":"reduz a Carga em 2 (mínimo 0) e o bônus em Crime muda para +1d8."},{"n":"Faca Acoplada","s":"fogo","t":"A sua arma tem um local para colocar uma faca, podendo atacar com sua faca (Teste é o mesmo da sua arma, dano 3) sem sacar ela. Além disso, cada modificação que essa arma possui, a faca pode receber também (de armas corpo a corpo). Essa modificação só pode ser colocada em Armas de Fogo de duas mãos.","a":"o dano da faca muda para 5."},{"n":"Ferrolho Automático","s":"fogo","t":"O mecanismo de ação da arma é modificado para disparar várias vezes em sequência. A arma se torna automática.","a":"a penalidade de ataque por disparar rajadas diminui em 1 passo."},{"n":"Lanterna Acoplada","s":"fogo","t":"A arma possui uma pequena lanterna acoplada, capaz de iluminar locais escuros. A lanterna projeta um cone de luz de 6 metros e elimina a penalidade por escuridão. Ligar ou desligar a lanterna é uma ação de movimento e pode ser desacoplada para se tornar uma Lanterna Tática.","a":"o cone de luz passa a 9m e, com uma ação de movimento, você pode mirar a luz nos olhos de um ser em alcance curto, deixando-o Ofuscado por 1 rodada (imune pelo resto da cena)."},{"n":"Mira Laser","s":"fogo","t":"Um laser interno cria um reflexo vermelho num retículo luminoso, que é visto pelo atirador e ajuda-o a realizar disparos mais letais. Para tirar um crítico, deve tirar 5+ em dois dados ao invés de 6+.","a":"além do crítico com 5+ nos dois dados, os acertos críticos causam +2 de dano."},{"n":"Mira Telescópica","s":"fogo","t":"A arma possui uma luneta com marcações de medidas, ideal para disparos precisos de longa distância. Aumenta o alcance da arma em uma categoria (de curto para médio, de médio para longo, de longo para extremo).","a":"o alcance aumenta em duas categorias."},{"n":"Resistente","s":"fogo","t":"A arma é fabricada com materiais mais robustos, ganhando +10 PV e +5 de RD.","a":"o bônus muda para +20 PV e +10 de RD."},{"n":"Silenciador","s":"fogo","t":"Um silenciador muda a penalidade para -1 passo em Furtividade para se esconder no mesmo turno em que atacou com a arma de fogo.","a":"você não sofre nenhuma penalidade em Furtividade para se esconder no turno em que atacou com a arma."},{"n":"Tática","s":"fogo","t":"A arma possui cabo texturizado, bandoleira e outros acessórios que facilitam seu manuseio. Você pode sacar a arma como uma ação livre.","a":"uma vez por rodada você também pode guardar a arma e sacar outra com Tática como ação livre."},{"n":"Tambor ou Carregador Estendido","s":"fogo","t":"Aumenta em 50% a Capacidade da arma (arredonde para cima). Não pode ser aplicada em armas de Capacidade 1.","a":"a capacidade aumenta em 100%."},{"n":"Tambor ou Carregador Modular","s":"fogo","t":"A arma é adaptada para usar munições variadas. Usar balas curtas em armas de fogo de balas longas, diminui o dano da arma em 1. Usar balas longas em armas de fogo de balas curtas, aumenta o dano da arma em 1","a":"balas curtas em armas de balas longas não reduzem o dano, e balas longas em armas de balas curtas aumentam o dano em 2."},{"n":"Visão de Calor","s":"fogo","t":"A mira tem um sistema eletrônico que sobrepõe imagens visíveis e imagens em infravermelho, criando um contraste entre zonas frias e quentes. Ao disparar com a arma, você ignora qualquer camuflagem do alvo.","a":"além de ignorar camuflagem, você enxerga no escuro e ignora Cobertura Parcial do alvo."},{"n":"Discreta","s":"prot","t":"Colete compacto feito com kevlar denso para reduzir o volume. Reduz o número de carga ocupado em 1, fornece +1d6 em testes de Crime para ser ocultada e permite que você faça esse teste mesmo que não seja treinado na perícia. Só pode ser aplicada em proteções leves.","a":"reduz a Carga em 2 (mínimo 0) e o bônus em Crime muda para +1d8."},{"n":"Isolante","s":"prot","t":"Modificada com um material grosso e impermeável. Fornece resistência 3 contra dano de frio (até –30° C), fogo e eletricidade, mas aumenta sua Carga em +1. Uma proteção não pode ser isolante e discreta ao mesmo tempo.","a":"a resistência muda para 5."},{"n":"Reforçada","s":"prot","t":"Aumenta a RD fornecida em +2 e o espaço ocupado em +1. Uma proteção não pode ser reforçada e discreta ao mesmo tempo.","a":"o bônus de RD muda para +4 e o espaço ocupado para +2."},{"n":"Alça Especial","s":"prot","t":"Alças mais confortáveis e resistentes para escudos. Ao bloquear com um escudo com esta modificação, você recebe +1d4 no teste de Bloqueio e +1 de RD. Só pode ser aplicada em escudos.","a":"o bônus muda para +1d6 no Bloqueio e +2 de RD."},{"n":"Antibombas","s":"prot","t":"Quimicamente tratada para resistir ao calor e revestida de preenchimentos que amortecem estilhaços. Acompanha um capacete com viseira para proteger da luz e do barulho de explosões. Fornece +1d6 em testes de resistência contra efeitos de área. Só pode ser aplicada em proteções pesadas.","a":"o bônus muda para +1d8."},{"n":"Dum Dum","s":"mun","t":"Balas feitas para se expandir no impacto, produzindo ferimentos terríveis. Só pode ser aplicada em balas curtas e longas. Em acerto crítico, o dano base da arma é triplicado em vez de dobrado.","a":"o dano base em acerto crítico é quadruplicado em vez de triplicado."},{"n":"Elétrica","s":"mun","t":"Só em flechas. Após atingir o alvo, a flecha causa +2 de dano de eletricidade e deixa o alvo Vulnerável por 1 rodada se ele falhar em um teste de Reflexos (DT (Mira)).","a":"o dano adicional muda para +4 e o alvo também fica Atordoado por 1 rodada se falhar."},{"n":"Envenenada","s":"mun","t":"Só em flechas. Após atingir o alvo, a flecha causa +2 de dano químico e deixa o alvo com Degeneração 2 por 1 rodada se ele falhar em um teste de Tenacidade (DT (Mira)).","a":"o dano adicional muda para +3 e a condição para Degeneração 3."},{"n":"Explosiva","s":"mun","t":"Munição com uma gota de mercúrio ou glicerina, que a faz explodir ao atingir o alvo. Só pode ser aplicada em balas curtas e longas. Aumenta o dano causado em +2.","a":"o bônus muda para +4."},{"n":"Inflamável","s":"mun","t":"Munição projetada para incendiar com facilidade. Só pode ser aplicada em flechas e bolinhas de estilingue. Ao atacar, você pode gastar uma ação de movimento para acender a munição, aumentando o dano em +2 de fogo. Em acerto crítico, o alvo fica Em Chamas (Reflexos, com DT igual ao resultado do ataque, evita).","a":"o dano adicional de fogo muda para +4."},{"n":"Localizador","s":"mun","t":"Só em flechas. Uma flecha com sistema de localização que emite um sinal se algo que irradie calor passar por perto (alcance curto). Sua ponta é projetada para aderir a locais de difícil acesso; ela não causa dano, pois sua função é grudar em vez de perfurar. Ao detectar calor, pode emitir um sinal para um dispositivo ou um alarme.","a":"a detecção de calor passa a alcance médio."},{"n":"Marcada com (Elemento)","s":"mun","t":"Um pacote de munição com elementos do paranormal, como símbolos, lodo ou Sangue. Aumenta a categoria em 1 e pode ser aplicada a qualquer munição (exceto foguetes e combustíveis), mas não pode ter outras modificações além desta. Munição marcada perde a modificação após 4 cenas de combate. O dano do ataque é metade do elemento escolhido e metade do tipo da arma. Segue as regras normais de munição.","a":"a munição pode ter uma outra modificação além da marca."},{"n":"Rapel","s":"mun","t":"Só em flechas. Uma flecha com uma corda presa à extremidade. Disparada contra uma superfície firme, ela se fixa e permite usar a corda como ponto de ancoragem para atravessar áreas normalmente inacessíveis; personagens treinados em Atletismo ou Acrobacia a atravessam com facilidade. Disparada para baixo, permite descer deslizando. O suporte aguenta apenas uma pessoa por vez, com menos de 80 kg; se o limite for excedido, a flecha se solta. Se alguém atravessar e prender a corda em uma estrutura segura, os outros podem atravessar normalmente, desde que a corda seja de boa qualidade.","a":"o suporte aguenta até 160 kg, ou duas pessoas por vez."},{"n":"Rede","s":"mun","t":"Só em flechas. Uma flecha com uma cápsula que libera uma rede: o alvo fica Imóvel se falhar em um teste de Reflexos (DT (Mira)) e precisa destruir a rede, que tem 20 PV.","a":"a rede passa a ter 30 PV e a DT para evitá-la aumenta em +2."},{"n":"Destrutiva","s":"gran","t":"A granada não é feita para pessoas, e sim para destruir entidades. Causa 50% a mais de dano.","a":"causa o dobro do dano."},{"n":"Duradoura","s":"gran","t":"A duração do efeito é potencializada. Se o efeito for instantâneo (como dano), nada muda; se durar 1 ou 2 rodadas, passa a durar 2 ou 5 rodadas, respectivamente.","a":"efeitos de 1 ou 2 rodadas passam a durar 3 ou 8 rodadas, respectivamente."},{"n":"Grudinho","s":"gran","t":"A granada gruda na área em que atinge, tornando muito mais fácil atingir os alvos: a DT para resistir a ela aumenta em +2.","a":"o alvo também sofre –1 passo no teste de resistência."},{"n":"Potente","s":"gran","t":"Feita para ir mais longe: a área de efeito aumenta em +3m de raio e o alcance de arremesso aumenta em um passo.","a":"a área de efeito aumenta em +6m de raio e o alcance de arremesso aumenta em dois passos."},{"n":"Aprimorado","s":"acess","t":"O bônus em perícia do acessório sobe um passo de dado (+1d4 vira +1d6; um bônus fixo +2 vira +3). Se o item tiver função adicional, a modificação pode ser escolhida uma segunda vez para essa função.","a":"sobe mais um passo."},{"n":"Bateria Potente","s":"acess","t":"Para objetos elétricos: aumenta a eficiência e a duração. Em lanternas, celulares e notebooks, dobra a duração da bateria e o alcance da luz. Em um taser, dobra os usos, aumenta o dano em +2 e a DT para resistir em +2. Pode afetar outros objetos, conforme a proposta do jogador, a critério do Mestre.","a":"a duração da bateria quadruplica; em um taser, o dano aumenta em +4 e a DT para resistir em +3."},{"n":"Discreto","s":"acess","t":"O item é miniaturizado ou disfarçado como outro item inócuo (como um relógio). Reduz a Carga ocupada em 1, fornece +1d6 em testes de Crime para ocultá-lo e permite fazer esse teste mesmo sem treinamento na perícia.","a":"reduz a Carga em 2 (mínimo 0) e o bônus em Crime muda para +1d8."},{"n":"Excelente","s":"acess","t":"Só em itens operacionais com DT para resistir ou para utilizar. Aumenta em +2 a DT do efeito do item e diminui em 2 a DT de utilização. Uma algema excelente concede +1d4 na manobra agarrar para prendê-la, e uma mina antipessoal excelente tem DT 13 em vez de 15 para ser instalada com Tática, por exemplo.","a":"aumenta a DT do efeito em +3 e diminui a DT de utilização em 3."},{"n":"Função Adicional","s":"acess","t":"O acessório fornece +1d4 em uma perícia adicional à sua escolha, sujeita à aprovação do Mestre.","a":"o bônus vale para duas perícias adicionais, em vez de uma."},{"n":"Instrumental","s":"acess","t":"O acessório pode ser usado como um kit de perícia específico, escolhido ao aplicar esta modificação.","a":"o acessório pode ser usado como kit de duas perícias, escolhidas ao aplicar a modificação."},{"n":"Complexa","s":"arm","t":"Mais bem preparada, com apetrechos para seu funcionamento. Só em armadilhas com DT para resistir. Aumenta em +2 a DT para resistir aos efeitos.","a":"o bônus muda para +3."},{"n":"Discreta","s":"arm","t":"Escondida entre a mata ou na escuridão de uma indústria. Aumenta em +3 a DT para encontrá-la.","a":"o bônus muda para +6."},{"n":"Perigosa","s":"arm","t":"Maior e mais assertiva: a área da armadilha e de seus efeitos aumenta em +1,5m.","a":"o bônus muda para +3m."},{"n":"Torturante","s":"arm","t":"Lâminas ou pontas mais afiadas, explosivos mais potentes e outras melhorias para causar mais dor. Só em armadilhas que causam dano. A armadilha causa +50% de dano.","a":"o bônus muda para +100%."}],"defs":[{"n":"Amorosa","s":"arma","t":"A arma não gosta de sair do coldre ou da bainha: está presa por ser justa demais ou enferrujada. Você a saca como uma ação completa, e guardá-la custa uma ação de movimento. Se algo reduziria o saque (como saque rápido), ela é sacada como ação padrão; nada reduz o saque a movimento ou menos.","cp":"Tática"},{"n":"Boazinha","s":"arma","t":"A arma não gosta de machucar ou não tem o fio para isso. Seu dano sofre –4 (mínimo 1).","cp":"Cruel"},{"n":"Chamativa","s":"arma","t":"Brilhante e reluzente, a arma é muito perceptível. Você sofre –2 passos em testes para ocultá-la e em Furtividade enquanto a empunha, e ataques feitos contra você contam como crítico com 5+ nos dois dados, em vez de 6+.","cp":"Discreta"},{"n":"Desbalanceada","s":"arma","t":"Um dos lados da arma é mais pesado que o outro, acabando com seu equilíbrio. Você sofre –1 passo em todos os dados dos testes de ataque com ela.","cp":"Certeira e Alongada"},{"n":"Desconfortável","s":"arma","t":"A pegada é péssima e incomoda no uso. Habilidades e rituais usados com ela empunhada custam +3 PE.","cp":"Reconfortante"},{"n":"Frágil","s":"arma","t":"A arma está no limite da durabilidade e quebra com qualquer problema interno. Ela tem metade dos PV e da RD e quebra se os dois dados de um ataque com ela tirarem 1.","cp":"Resistente"},{"n":"Inofensiva (arma)","s":"arma","t":"A arma não causa feridas profundas ou permanentes. A arma não pode causar acerto crítico (um crítico conta como acerto normal) e seu dano sofre –2.","cp":"Perigosa"},{"n":"Calibre Fino","s":"fogo","t":"O calibre é mais fino que o normal, reduzindo o dano em –4 (mínimo 1). Exige munição específica de calibre fino, que funciona como a de Calibre Grosso.","cp":"Calibre Grosso"},{"n":"Coice Estonteante","s":"fogo","t":"A arma não tem amortecimento e você sofre todo o efeito da explosão da pólvora. Se o ataque for um acerto crítico ou algum dos dados tirar 1, a força do disparo é grande demais e você fica Atordoado por 1 rodada.","cp":"Compensador"},{"n":"Emperrada","s":"fogo","t":"O interior está enferrujado e impede o recarregamento normal: só é possível dar 1 tiro por rodada, e isso exige uma ação completa.","cp":"Ferrolho Automático"},{"n":"Encurtada","s":"fogo","t":"A capacidade de propulsão é menor que a das armas do tipo. O alcance diminui em dois passos (mínimo 4,5m).","cp":"Estendida e Mira Telescópica"},{"n":"Gulosa","s":"fogo","t":"A arma recarrega rápido demais ou espalha cápsulas ainda com balas dentro. Você gasta o dobro de munição; se a duração da munição for 1 cena ou menos, precisa de 2 munições iguais para usar a arma.","cp":"Tambor ou Carregador Estendido"},{"n":"Mira Turva","s":"fogo","t":"A mira é embaçada ou quebrada e aponta levemente para o lado errado. Seus alvos contam como em Camuflagem Parcial e você sofre –1 passo em ataques contra alvos além do alcance curto.","cp":"Alongada e Mira Telescópica"},{"n":"Estonteantes","s":"mun","t":"As balas fazem barulho demais ao sair do cano. Ao atirar, todos em alcance médio, você incluído, ficam Surdos e você não consegue se esconder até a sua próxima rodada.","cp":"Silenciador"},{"n":"Poof Poof","s":"mun","t":"As balas são de borracha, causando feridas menores. Todo o dano da arma se torna não letal, ela não pode causar acerto crítico (um crítico conta como acerto normal) e seu dano sofre –2.","cp":"Dum Dum"},{"n":"Antiga","s":"prot","t":"A proteção já foi usada dezenas de vezes e tem rasgos e buracos de bala: não fornece RD. Só pode ser aplicado em proteções pesadas.","cp":"Reforçada"},{"n":"Desconfortável (proteção)","s":"prot","t":"A proteção é apertada ou feita para um corpo diferente do seu. Você sofre –2 passos em Acrobacia, Atletismo, Furtividade e Reflexos (–3 passos com proteção pesada).","cp":"Discreta"},{"n":"Instável","s":"prot","t":"Tecido, juntas ou fundições já não estão firmes e qualquer coisa pode quebrar a proteção. O item quebra se você entrar em Morrendo por dano massivo ou sofrer um acerto crítico.","cp":"Reforçada"},{"n":"Reciclada","s":"prot","t":"Feita de pedaços de proteções antigas, com mais falhas na defesa. A RD fornecida diminui em 1 (leves) ou 3 (pesadas).","cp":"Reforçada"},{"n":"Tecido Grosso","s":"prot","t":"O tecido é grosso e pesado sem necessidade, só incomodando. A Carga ocupada pela proteção dobra e você sofre –1 passo em testes de Presteza.","cp":"Discreta"},{"n":"Fraquinha","s":"gran","t":"O combustível é diluído ou o mecanismo explosivo é defeituoso. O dano diminui em 75% e o raio de efeito diminui em 1,5m.","cp":"Destrutiva"},{"n":"Inconsistente","s":"gran","t":"A granada tem um formato torcido e irregular, o que torna difícil atingir o ponto desejado. A DT dela diminui em 4. Só em granadas cujo efeito tenha DT.","cp":"Grudinho"},{"n":"Precoce","s":"gran","t":"Só em granadas com efeito de 2 rodadas ou mais. Tem menos combustível e dura menos: efeito de 5 rodadas ou mais passa a durar 2; efeito de 2 rodadas passa a durar 1.","cp":"Duradoura"},{"n":"Reduzida","s":"gran","t":"Uma versão menor da granada, com deformações que a deixam menos aerodinâmica. O alcance diminui em um passo e o raio de efeito diminui em 3m.","cp":"Potente"},{"n":"Simplificada","s":"arm","t":"Sem engenhosidade ou tecnologia, feita de qualquer jeito. A DT para resistir aos efeitos diminui em 4.","cp":"Complexa"},{"n":"Escancarada","s":"arm","t":"Nada disfarçada, visível mesmo quando se tenta escondê-la. A DT para encontrá-la diminui em 4.","cp":"Discreta (armadilha)"},{"n":"Inofensiva (armadilha)","s":"arm","t":"Uma versão menor da armadilha original, com menos alcance. A área da armadilha e de seus efeitos diminui em 3m (mínimo 1,5m).","cp":"Perigosa"},{"n":"Carinhosa","s":"arm","t":"Lâminas sem fio, combustível diluído ou mecanismo explosivo defeituoso. O dano diminui em 75%.","cp":"Torturante"}],"curses":[{"n":"Conjurada","s":"arma","e":"varia","t":"Escolha um elemento, essa maldição é desse elemento. A arma afetada por essa maldição fica com a aparência permanente do mesmo, e recebe +3 de dano do elemento. Você pode dissipar a arma e fazê-lo reaparecer quando quiser até 1 dia. Em uma cena de combate, se você invocar a arma poucos momentos antes de dar o golpe (declarar que vai invocar antes de bater estando adjacente) o alvo fica desprevenido. A arma desaparece e reaparece de uma forma referente ao elemento escolhido (se formando das suas veias sendo sangue, transformando sua mão em lodo momentaneamente e formando a arma, etc) Entretanto, cada vez que invocar a arma, o conjurador perde 1 de Sanidade."},{"n":"Anti-Elemento","s":"arma","e":"conh","t":"A arma é letal contra criaturas de um elemento. Quando ataca uma criatura desse elemento, você pode gastar 2 PE. Se fizer isso e acertar o ataque, causa +13 pontos de dano. Para determinar o elemento aleatoriamente, role 1d4: 1) Conhecimento; 2) Energia; 3) Morte; 4) Sangue."},{"n":"Axiomática","s":"arma","e":"conh","t":"O Conhecimento está sempre certo, o destino se curva a ele. A arma causa +3 pontos de dano de Conhecimento. Além disso, pode gastar 2 PE antes de realizar um teste de ataque com a arma para adicionar +3 de dano de Conhecimento para cada dado do teste que tirar um valor maior que sua metade (dado de suporte incluso)."},{"n":"Ritualística","s":"arma","e":"conh","t":"Você pode armazenar na arma um ritual que tenha como alvo um ser ou que afete uma área, gastando os PE como se tivesse conjurado o ritual normalmente. O ritual não gera efeito na hora; em vez disso, fica guardado no item. Quando acerta um ataque com a arma, você pode descarregar o ritual armazenado como uma ação livre. O alvo do ritual, ou o centro da área dele, é o ser atingido. Uma vez que o ritual seja descarregado, outro pode ser armazenado."},{"n":"Senciente","s":"arma","e":"conh","t":"Você pode gastar uma ação de movimento e 2 PE para imbuir a arma com uma fagulha de sua consciência. A arma flutua ao seu lado e, uma vez por rodada, ataca um ser em alcance curto (ou no alcance da arma, o que for maior) à sua escolha, com as mesmas estatísticas que teria se você a estivesse empunhando. Para manter esse efeito, terá que gastar 1 PE no início de cada um de seus turnos. Se não o fizer, a arma cai no chão. Você pode usar uma ação de movimento para apanhar a arma no ar caso precise. Soltar a arma para que volte a flutuar para ativar a maldição é uma ação livre."},{"n":"Condutora","s":"arma","e":"ener","t":"A arma acumula energia cinética e converte para elétrica. A cada ataque acertado, você recebe um dado de bônus que começa em d4 e sobe o passo a cada ataque em testes de ataque com a arma, que dura até o final da cena. Quando esse bônus atingir d12, seu próximo acerto com a arma, descarrega toda a energia acumulada de uma só vez como uma corrente elétrica, que causa um dano adicional de 17 de Eletricidade, resetando o bônus."},{"n":"Empuxo","s":"arma","e":"ener","t":"Com a capacidade de gerar uma descarga momentânea de Energia, a arma ganha a capacidade de ser arremessada em alcance curto (se já podia ser arremessada, seu alcance aumenta em uma categoria) e causa dano adicional igual à metade do dano da arma (arredondado para cima) quando usada dessa forma. Após efetuar um ataque à distância com a arma, ela volta voando para você no mesmo turno. Pegar a arma é uma reação. Somente armas corpo a corpo podem receber essa maldição."},{"n":"Energética","s":"arma","e":"ener","t":"Você pode gastar 2 PE por ataque para transformar a arma (exceto seu cabo ou empunhadura) ou a munição disparada pela arma em Energia pura. Durante este ataque, a arma fornece +1d6 em testes de ataque, ignora resistência a dano e converte todo o dano causado para Energia. Armas de corpo a corpo emanam luz como uma lâmpada; munição toma uma forma plasmática iluminada como feixes de luz."},{"n":"Vibrante","s":"arma","e":"ener","t":"A arma vibra constantemente com um fluxo de Energia. Você recebe a habilidade Pressão da Especialização em Combate. Se já a possui, em vez disso o bônus dela aumenta em +1. Com esta maldição, os ataques extras com a arma pagam apenas –1 passo por ataque extra, mesmo sendo de disparo."},{"n":"Atemporal","s":"arma","e":"morte","t":"Ao invés de atacar um alvo específico, você pode gastar 3 PE e atacar um ponto qualquer no alcance da arma. O ataque fica fora da linha do tempo, e inerte por uma rodada. Após o período inerte, você pode manifestar o ataque a qualquer momento como uma distorção temporal destrutiva que cobre uma área circular com 3m de diâmetro centralizado no ponto atacado. Durante a manifestação, um único teste de ataque é rolado contra todos os seres dentro da área, que sofrem o dano da arma e +8 de dano de Morte. O RD dos alvos atingidos é ignorado (exceto de Morte) e, mesmo que o teste de ataque não supere a reação dos alvos, metade do dano ainda é causado."},{"n":"Consumidora","s":"arma","e":"morte","t":"A arma drena a entropia de seres, deixando alvos atingidos lentos até o final da cena. Quando ataca, você pode gastar 2 PE. Se fizer isso e acertar o ataque, o alvo fica imóvel por uma rodada."},{"n":"Erosiva","s":"arma","e":"morte","t":"A arma acelera o envelhecimento dos alvos, causando +3 pontos de dano de Morte. Quando ataca, você pode gastar 2 PE. Se fizer isso e acertar o ataque, a vítima sofre 4 pontos de dano de Morte no início de seus turnos pelas próximas duas rodadas."},{"n":"Repulsora","s":"arma","e":"morte","t":"A arma gera uma aura similar a uma fumaça espiralada que desacelera ataques vindos em sua direção, fornecendo +1 passo em reações enquanto estiver empunhada. Quando você faz uma reação, pode gastar 2 PE. Se fizer isso, recebe um bônus adicional de +1d6 nas reações."},{"n":"Frenética","s":"arma","e":"sangue","t":"Ao ver sangue jorrar, suas armas desejarão por mais. Gaste 2 PE antes do ataque para ativar o frenesi de sua arma. Sempre que o dado do teste que vale como RA tirar o valor máximo da sua face, o ataque soma o dano da arma mais uma vez (uma vez por ataque). Só pode ser colocada em armas corpo a corpo e de disparo."},{"n":"Lancinante","s":"arma","e":"sangue","t":"A arma infligir ferimentos terríveis, causando +4 de dano de Sangue. Este dano é dobrado em acertos críticos."},{"n":"Predadora","s":"arma","e":"sangue","t":"A arma tem sede de sangue e persegue seus alvos, anulando penalidades por camuflagem e cobertura (mas não cobertura total). Caso a arma seja de ataque à distância, seu alcance também aumenta em uma categoria. Além disso, a margem de ameaça da arma diminui para 5+ e se já era assim, fica 4+."},{"n":"Sanguinária","s":"arma","e":"sangue","t":"Os ferimentos causados pela arma se rasgam além da área acertada. Um ser atingido fica sangrando. Sangramento causado pela arma é cumulativo, subindo o passo por ataque — um ser atingido duas vezes sofre 3 pontos de dano de sangramento por rodada. Além disso, quando você faz um acerto crítico com a arma ela drena o sangue derramado, o que deixa o alvo fraco e concede a você 10 pontos de vida temporários."},{"n":"Crescente","s":"arma","e":"medo","t":"A arma parece interagir com o outro lado, ficando mais distorcida conforme a influência do paranormal aumenta. Em locais que a Membrana seja Estável, ela causa +2 de dano de Medo (ignora todas as resistências) Caso a Membrana esteja danificada, o bônus muda para +4 de dano de Medo. Por fim, se a Membrana estiver arruinada, causa +8 de dano de Medo."},{"n":"Desregrada","s":"arma","e":"medo","t":"Essa maldição altera as regras do Outro Lado que tange o objeto, permitindo que maldições de elementos oprimidos e opressores sejam misturadas no mesmo item (Energia com Morte, por exemplo). Essa maldição não altera a categoria do item."},{"n":"Medonha","s":"arma","e":"medo","t":"Sua arma se torna monocromática e impossível. Você agora pode converter o dano de sua arma para dano de Medo, gastando 2 PE por dado. Diferente de outros danos de Medo, criaturas podem receber este, porém tomarão a metade."},{"n":"Indetectável","s":"mun","e":"conh","t":"A munição não produz som, não causa marcas ou lesões e desaparece após uso. Você não sofre a penalidade de –3 passos em teste de Furtividade após atacar. Além disso, personagens tem +6 na DT em testes para procurar pistas relacionadas à munição."},{"n":"Libertadora","s":"mun","e":"conh","t":"Possui uma aura brilhante em dourado e o peso alivia o mundo que você carrega. Causa +3 de Conhecimento e os gritos, o desespero ou até sutis mudanças da criatura lhe dá prazer, recebendo +1 PE temporários quando causa dano com esta munição."},{"n":"Impetuosa","s":"mun","e":"ener","t":"A munição é coberta por fogo após ser disparada, causando +4 pontos de dano de fogo. Além disso, quando você faz um acerto crítico com a munição ela explode em chamas, causando o dano da arma contra seres em um raio de 3m a partir do alvo original (Reflexos reduz à metade)."},{"n":"Borrachenta","s":"mun","e":"ener","t":"A munição é formada por um material borrachento e caótico. Você pode usar essa munição para causar dano não letal. Além disso, sempre que acerta um ataque, a munição ricocheteia para o ser em alcance curto mais próximo do alvo original (faça um novo teste de ataque para ele)."},{"n":"Embriagante","s":"mun","e":"morte","t":"Um sabor inebriante até demais, por isso seres que receberem um tiro precisam fazer um teste de Tenacidade contra o seu teste de Ataque, se falharem ficam Fracas por 1 rodada. Caso estiver Machucada tem -1 passo nesse teste e passar anula seus efeitos por uma rodada."},{"n":"Lodosa","s":"mun","e":"morte","t":"A munição é coberta em Lodo, causando +3 pontos de dano de Morte. Além disso, sempre que acerta um ataque a munição enche o sangue do alvo com Lodo, fazendo ele sofrer -1 passo em suas reações pelo resto da cena."},{"n":"Obcecante","s":"mun","e":"sangue","t":"A munição deixa seres obcecados em abater seus alvos. Quando ataca, você pode gastar 2 PS. Se fizer isso e acertar o ataque, aliados recebem +3 em testes de ataque e rolagens de dano contra a vítima por 1 rodada."},{"n":"Perfurante","s":"mun","e":"sangue","t":"A munição possui uma ponta afiada de sangue seco, causando +3 pontos de dano de Sangue. Além disso, a munição, além de atingir um ser no alcance da arma, também atinge todos os seres em uma linha de 1,5m de largura com alcance curto. Faça um único teste de ataque e compare o resultado com a reação de todos os seres na área."},{"n":"Desregrada","s":"mun","e":"medo","t":"Essa maldição altera as regras do Outro Lado que tangem o objeto, permitindo que maldições de elementos oprimidos e opressores sejam misturadas no mesmo item (Energia com Morte, por exemplo). Essa maldição não altera a categoria do item."},{"n":"Abscanta","s":"prot","e":"conh","t":"Você recebe +1d6 em testes de resistência contra rituais. Uma vez por cena, quando você é alvo de um ritual, pode gastar uma reação e PE igual ao custo dele para refleti-lo de volta ao conjurador. As características do ritual (efeitos, DT...) se mantêm, mas você toma quaisquer decisões exigidas por ele."},{"n":"Profética","s":"prot","e":"conh","t":"A proteção concede vislumbres de um possível futuro imediato. Você recebe resistência a Conhecimento 6 e pode gastar 3 PE para rolar novamente um teste de resistência ou reação uma vez."},{"n":"Sombria","s":"prot","e":"conh","t":"A proteção confunde os sentidos. Você recebe +1d6 em Furtividade e ignora a penalidade de carga em testes dessa perícia. Além disso, você pode gastar uma ação de movimento e 1 PE para fazer o item adquirir a aparência de uma roupa comum, mas mantendo suas propriedades (bônus na RD, espaço ocupado, penalidade em perícias...)."},{"n":"Lépida","s":"prot","e":"ener","t":"A proteção amplifica sua mobilidade, concedendo +1d8 em testes de Atletismo e +3m de deslocamento. Você pode gastar 2 PE para se mover de forma sobrenatural. Até o final do turno, você ignora terreno difícil, recebe deslocamento de escalada igual a seu deslocamento terrestre e fica imune a dano por queda de até 9m."},{"n":"Sobreposta","s":"prot","e":"ener","t":"O caos que imbui a sua proteção embaralha a realidade, fazendo com que não haja a certeza de onde você realmente está. Ao usar a ação de movimento, você deixa uma miragem translúcida em seu ponto de origem. Ele é imóvel, imune a todas as condições e não sofre dano. Até o final do seu turno, você pode gastar 2 PE para teletransportar-se de volta para a miragem. Ao final de seu turno, ela é desfeita. Caso você utilize outra ação de movimento, você cria um novo clone e o outro é desfeito."},{"n":"Voltaica","s":"prot","e":"ener","t":"Você recebe resistência a Energia 6 e pode gastar uma ação de movimento e 2 PE para fazer a proteção emitir arcos de Energia até o fim da cena. Se fizer isso, no fim de cada um de seus turnos você causa 4 + RA pontos de dano de Energia em todos os seres adjacentes."},{"n":"Mortalha","s":"prot","e":"morte","t":"Para cada vez que, na cena, sair do estado de Morrendo, você ganha +5 de PE e PV máximo e +1d6 em testes de ataque cumulativos até o final da cena."},{"n":"Repulsiva","s":"prot","e":"morte","t":"Você recebe resistência a Morte 6 e pode gastar uma ação de movimento e 2 PE para cobrir seu corpo com uma camada de lodo preto até o final da cena. Se fizer isso, qualquer ser que ataque-o corpo a corpo sofre 6 pontos de dano de Morte."},{"n":"Retrógrada","s":"prot","e":"morte","t":"A proteção desacelera ataques perigosos, concedendo +1d4 em Reações. Além disso, você recebe 25% de chance (para proteção leve ou escudo) e 50% de chance (para pesada) de ignorar o dano extra de acertos críticos e ataques furtivos."},{"n":"Regenerativa","s":"prot","e":"sangue","t":"A proteção melhora sua capacidade de resistência e regeneração. Você recebe resistência a Sangue 10 e pode gastar uma ação de movimento e 1 PE para recuperar 5 + RB pontos de vida."},{"n":"Vinculada","s":"prot","e":"sangue","t":"A proteção se vincula a você, absorvendo parte da sua dor. Você recebe a habilidade Sangue pelo Rito da Especialização Oculto. Se já a possui, em vez disso o custo para usá-la diminui em –1 PE."},{"n":"Vingativa","s":"prot","e":"sangue","t":"Ao receber dano Mental causa dano de Sangue igual para quem o atacou. Se caso estiver com 0 de PE recebe Cura Acelerada 1 +1 para cada Efeito de Medo que ganhou nesta Cena até sair de enlouquecendo."},{"n":"Incerta","s":"prot","e":"medo","t":"A proteção adquire um aspecto turvo e cinza, marcada com sigilos brancos. Ela fornece +1d6 de resistência contra habilidades de criaturas. Toda vez que resistir a um ritual, você recupera 1 ponto de determinação por teste de resistência bem sucedido e para cada 2 níveis de horror que a criatura tiver, você recebe +1."},{"n":"Desregrada","s":"prot","e":"medo","t":"Essa maldição altera as regras do Outro Lado que tangem o objeto, permitindo que maldições de elementos oprimidos e opressores sejam misturadas no mesmo item (Energia com Morte, por exemplo). Essa maldição não altera a categoria do item."},{"n":"Canalizador de [Elemento]","s":"acess","e":"varia","t":"Uma vez por rodada, você pode conjurar um ritual de um elemento como ação livre. Este acessório conta como um item do elemento canalizado.GatilhoSempre que conjurar um ritual com este item"},{"n":"Conjuração de [Elemento]","s":"acess","e":"varia","t":"O acessório tem um ritual de 1º círculo. Se estiver empunhando o item, você pode conjurar o ritual como se o conhecesse. Caso conheça o ritual, seu custo diminui em –1 PE.GatilhoSempre que conjurar o ritual deste item o empunhando"},{"n":"Proteção contra [Elemento]","s":"acess","e":"varia","t":"Você recebe resistência 6 contra um elemento. Este acessório conta como um item do elemento contra o qual fornece resistência.GatilhoSempre que sofrer dano desse tipo (mesmo que reduza o dano à zero)"},{"n":"Calmaria","s":"acess","e":"conh","t":"Este acessório fornece +15 PE máximos. Este efeito só se ativa após um dia de uso.GatilhoSempre que perder pelo menos 1 PE"},{"n":"Epifania","s":"acess","e":"conh","t":"Este acessório faz verdades surgirem num estalo de lucidez, te permite gastar 2 PE para rolar um dado de Mente adicional e escolher o que tiver o melhor valor.Gatilhosempre que usar a habilidade deste item"},{"n":"Escudo Mental","s":"acess","e":"conh","t":"O acessório gera uma barreira psíquica. Você recebe resistência mental 3.GatilhoSempre que sofrer dano mental (mesmo que reduz à zero)"},{"n":"Reflexão","s":"acess","e":"conh","t":"Uma vez por rodada, quando você é alvo de um ritual, pode gastar PE igual ao custo dele para refleti-lo de volta ao seu conjurador. As características do ritual (efeitos, DT...) se mantêm, mas você toma quaisquer decisões exigidas por ele.GatilhoSempre que usar a habilidade deste item"},{"n":"Ressonante","s":"acess","e":"conh","t":"Ao realizar um teste de Mente, você pode gastar 2 PE para receber +1d6 nesse teste.Gatilhosempre que usar a habilidade deste item"},{"n":"Sagacidade","s":"acess","e":"conh","t":"Sua mente é acelerada pelas forças do Conhecimento, fornecendo a você +1 passo em Mente (este aumento não fornece perícias treinadas).GatilhoSempre que falhar em um teste deste atributo"},{"n":"Agilidade","s":"acess","e":"ener","t":"O acessório acelera seus reflexos e movimentos, fornecendo +1 passo em Presteza (este aumento não altera o deslocamento).GatilhoSempre que falhar em um teste deste atributo"},{"n":"Barreira","s":"acess","e":"ener","t":"O acessório gera uma barreira translúcida lhe fornecendo RD 6 contra Balístico, Corte, Perfuração e Impacto.GatilhoSempre que sofrer um desses tipos de dano (mesmo se reduzir à zero)"},{"n":"Defesa","s":"acess","e":"ener","t":"Uma barreira de energia invisível gerada por este acessório fornece +1d6 em reações.GatilhoSempre que falhar em uma reação"},{"n":"Destreza","s":"acess","e":"ener","t":"Ao realizar um teste de Presteza, você pode gastar 2 PE para receber +1d6 nesse teste.Gatilhosempre que usar a habilidade deste item"},{"n":"Oscilante","s":"acess","e":"ener","t":"Este acessório aprimora sua coordenação e velocidade, te permite gastar 2 PE para rolar um dado de Presteza adicional e escolher o que tiver o melhor valor.Gatilhosempre que usar a habilidade deste item"},{"n":"Potência","s":"acess","e":"ener","t":"Este acessório aumenta a DT contra seus rituais e habilidades em +1.GatilhoSempre que alguém passar na sua DT"},{"n":"Acumulador","s":"acess","e":"morte","t":"Você se aproveita de qualquer coisa que receba, antes que acabe. todos os pontos temporários duram uma cena à maisGatilhoSempre que perder esses pontos sem gastá-los por habilidade"},{"n":"Esforço Reciclado","s":"acess","e":"morte","t":"Quando passa em um teste de resistência contra um ritual, recebe PE temporário igual a metade do custo daquele ritualGatilhoSempre que falhar em um teste de resistência, de ritual ou não"},{"n":"Inexorável","s":"acess","e":"morte","t":"Ao realizar um teste de Espírito, você pode gastar 2 PE para receber +1d6 nesse teste.Gatilhosempre que usar a habilidade deste item"},{"n":"Nostálgica","s":"acess","e":"morte","t":"Poderá guardar 5 de PE neste acessório com uma ação de interlúdio e ganhar de volta com uma ação livre.GatilhoSempre sofrer pelo menos -1 PE"},{"n":"Perene","s":"acess","e":"morte","t":"O acessório fortalece sua vontade diante do fim, fornecendo +1 passo em Espírito (este aumento não fornece PE adicionais).GatilhoSempre que falhar em um teste deste atributo"},{"n":"Presságio","s":"acess","e":"morte","t":"Este acessório concede vislumbres do que está vir, te permite gastar 2 PE para rolar um dado de Espírito adicional e escolher o que tiver o melhor valor.Gatilhosempre que usar a habilidade deste item"},{"n":"Adrenalina","s":"acess","e":"sangue","t":"Quando receber um ataque que te deixou Machucado, o acessório lhe faz ter um surto de adrenalina, permitindo a você imediatamente revidar, e receber +1d4 em testes de ataque até que saia dessa condição.GatilhoSempre que terminar um turno no estado Machucado"},{"n":"Disposição","s":"acess","e":"sangue","t":"Valendo-se do Sangue, você recebe +3m de deslocamento e pode nadar e escalar usando seu deslocamento terrestreGatilhoSempre que não se mover em uma rodada"},{"n":"Ebulição","s":"acess","e":"sangue","t":"Seu sangue ferve dentro do acessório, aumentando sua força e vigor, e te permite gastar 2 PE para rolar um dado de Físico adicional e escolher o que tiver o melhor valor.Gatilhosempre que usar a habilidade deste item"},{"n":"Pujança","s":"acess","e":"sangue","t":"O acessório aumenta sua potência muscular, fornecendo +1 passo em Físico (este aumento não fornece PV adicionais).GatilhoSempre que falhar em um teste deste atributo"},{"n":"Veemência","s":"acess","e":"sangue","t":"Ao realizar um teste de Físico, você pode gastar 2 PE para receber +1d6 nesse teste.Gatilhosempre que usar a habilidade deste item"},{"n":"Vitalidade","s":"acess","e":"sangue","t":"Este acessório fornece +15 PV máximos. Este efeito só se ativa após um dia de uso.GatilhoSempre que perder pelo menos 1 PV"},{"n":"Desregrada","s":"acess","e":"medo","t":"Essa maldição altera as regras do Outro Lado que tangem o objeto, permitindo que maldições de elementos oprimidos e opressores sejam misturadas no mesmo item (Energia com Morte, por exemplo). Essa maldição não altera a categoria do item.GatilhoSempre que ativar o gatilho de uma Maldição"}]};
+const MOD_SEC_NOME = {arma:'Armas (corpo a corpo e disparo)', fogo:'Armas de fogo', prot:'Proteções', mun:'Munições', gran:'Granadas', acess:'Acessórios', arm:'Armadilhas'};
+const EL_NOME = {sangue:'Sangue', morte:'Morte', conh:'Conhecimento', ener:'Energia', medo:'Medo', varia:'Varia'};
+const MARC_MODS = '=== Modificações, maldições e defeitos ===';
+const MAX_DEFEITOS_ITEM = 3;
+function ehFogo(it){ if(!it || it.s!=='dp') return false; const m = munDoItem(it); return !!(m && /Balas|Cartuchos/.test(m.pk)); }
+// classes de modificação aplicáveis a um item do catálogo (null = sem opções)
+function itemClasse(g, it){
+  if(!g) return null;
+  if(g.indexOf('Armas')===0){ const f = ehFogo(it); return {mods:f?['arma','fogo']:['arma'], curses:['arma'], defs:f?['arma','fogo']:['arma'], pesada:g==='Armas Pesadas', cc:!!(it && it.s==='cc')}; }
+  if(g==='Proteções') return {mods:['prot'], curses:['prot'], defs:['prot']};
+  if(g==='Munição') return {mods:['mun'], curses:['mun'], defs:['mun']};
+  if(g==='Acessórios' || g==='Itens Gerais') return {mods:['acess'], curses:['acess'], defs:[]};
+  if(g==='Explosivos') return {mods:['gran'], curses:[], defs:['gran']};
+  if(g==='Armadilhas') return {mods:['arm'], curses:[], defs:['arm']};
+  return null;
+}
+function modEntrada(m){
+  const lista = m.t==='m' ? MODDATA.mods : m.t==='c' ? MODDATA.curses : MODDATA.defs;
+  return lista.find(x=>x.n===m.n && x.s===m.s) || null;
+}
+function normNome(n){ return String(n||'').toLowerCase().replace(/\s*\(.*?\)\s*/g,'').trim(); }
+// efeitos numéricos que não estão só no texto: c=categoria, k=carga, d=dano (índice 0 = base, 1 = avançada)
+const EF_MODS = {
+  'cruel':[{d:2},{d:4}], 'calibre grosso':[{d:2},{d:4}],
+  'discreta':[{k:-1},{k:-2}], 'discreto':[{k:-1},{k:-2}],
+  'reforçada':[{k:1},{k:2}], 'isolante':[{k:1},{k:1}],
+  'reconfortante':[{c:2},{c:2}]
+};
+const EF_DEFS = { 'boazinha':{d:-4}, 'calibre fino':{d:-4}, 'inofensiva':{d:-2}, 'tecido grosso':{kdobra:1} };
+// defeito e modificação-contraparte escolhidos juntos se anulam
+function modsAnulados(mods){
+  const an = new Set();
+  const nomesMods = mods.filter(m=>m.t==='m').map(m=>normNome(m.n));
+  mods.filter(m=>m.t==='d').forEach(d=>{
+    const e = modEntrada(d); if(!e || !e.cp) return;
+    e.cp.split(/\s+e\s+|,/).map(normNome).forEach(c=>{
+      const i = mods.findIndex(m=>m.t==='m' && normNome(m.n)===c && !an.has(m));
+      if(i>=0 && !an.has(d)){ an.add(d); an.add(mods[i]); }
+    });
+  });
+  return an;
+}
+function efeitosMods(mods, baseCat, baseCarga){
+  const an = modsAnulados(mods);
+  let c=0, k=0, d=0;
+  mods.forEach(m=>{
+    if(an.has(m)) return;
+    const nn = normNome(m.n);
+    if(m.t==='m'){
+      const ef = (EF_MODS[nn]||[])[m.a?1:0] || (EF_MODS[nn]||[])[0] || {};
+      c += (ef.c!==undefined ? ef.c : 1); k += ef.k||0; d += ef.d||0;
+    } else if(m.t==='c'){ c += 2; }
+    else {
+      const ef = EF_DEFS[nn] || {};
+      c -= 1; d += ef.d||0; if(ef.kdobra) k += Number(baseCarga)||0;
+    }
+  });
+  return {c:c, k:k, d:d, an:an};
+}
+const clampCat = v => Math.max(0, Math.min(4, v));
+// expressões de dano do tipo "8+RA", "RA"
+function aplicaDano(base, d){
+  base = String(base||'').trim();
+  if(!d) return base;
+  let m = /^(\d+)\s*\+\s*(R[AB])$/i.exec(base);
+  if(m) return Math.max(1, parseInt(m[1],10)+d)+'+'+m[2].toUpperCase();
+  m = /^(R[AB])$/i.exec(base);
+  if(m) return d>0 ? d+'+'+m[1].toUpperCase() : base;
+  return base+(d>0?'+':'')+d;
+}
+function danoBaseDe(digitado, d){
+  digitado = String(digitado||'').trim();
+  if(!d) return digitado;
+  let m = /^(\d+)\s*\+\s*(R[AB])$/i.exec(digitado);
+  if(m) return Math.max(0, parseInt(m[1],10)-d)+'+'+m[2].toUpperCase();
+  return digitado;
+}
+// bloco gerenciado nas notas
+function stripMods(t){ return String(t||'').replace(/\n*=== Modificações, maldições e defeitos ===[\s\S]*$/, ''); }
+function blocoMods(mods){
+  const an = modsAnulados(mods);
+  return MARC_MODS+'\n'+mods.map(m=>{
+    const e = modEntrada(m); if(!e) return '• '+m.n;
+    const tag = m.t==='c' ? ' (Maldição'+(e.e && e.e!=='varia' ? ' de '+EL_NOME[e.e] : '')+')' : m.t==='d' ? ' (Defeito)' : (m.a ? ' (Avançada)' : '');
+    const tx = m.t==='m' && m.a ? e.t+' Avançada: '+e.a : e.t;
+    return '• '+m.n+tag+(an.has(m)?' [anulado pela contraparte]':'')+': '+tx;
+  }).join('\n');
+}
+function setNotasMods(key, mods){
+  const base = stripMods(store[key]);
+  store[key] = base + (mods.length ? (base ? '\n\n' : '')+blocoMods(mods) : '');
+}
+function nivelAcessoNum(){ const m = /^(\d)/.exec(store['acesso']||''); return m ? parseInt(m[1],10) : 0; }
+function avancadasUsadas(ignorar){
+  let n = 0;
+  Object.keys(store).forEach(k=>{
+    if(k===ignorar) return;
+    if(!/^(bolso_|vest_|recitem_)/.test(k) || k.indexOf('__')>=0) return;
+    ((store[k]||{}).mods||[]).forEach(m=>{ if(m.t==='m' && m.a) n++; });
+  });
+  return n;
+}
+function itensComDefeito(ignorar){
+  let n = 0;
+  Object.keys(store).forEach(k=>{
+    if(k===ignorar) return;
+    if(!/^(bolso_|vest_|recitem_)/.test(k) || k.indexOf('__')>=0) return;
+    if(((store[k]||{}).mods||[]).some(m=>m.t==='d')) n++;
+  });
+  return n;
+}
+
+// ---- janela de escolha ----
+let modsCtx = null;
+function criaModsOverlay(){
+  if(document.getElementById('modsOverlay')) return;
+  const ov = document.createElement('div'); ov.className='modal-overlay noprint'; ov.id='modsOverlay';
+  ov.innerHTML = '<div class="modal-box modsbox"><h3 id="modsTitle">Modificações</h3><div id="modsCtx" class="modsctx"></div>'
+    +'<div class="modstabs"><button type="button" data-aba="m">Modificações</button><button type="button" data-aba="c">Maldições</button><button type="button" data-aba="d">Defeitos</button></div>'
+    +'<input type="text" id="modsFiltro" placeholder="Filtrar pelo nome" style="border:1px solid var(--line);border-radius:4px;padding:6px">'
+    +'<div id="modsLista" class="modslista"></div><div id="modsResumo" class="modsresumo"></div>'
+    +'<div class="modal-actions"><button type="button" id="modsCancel">Cancelar</button><button type="button" id="modsOk" style="border-color:var(--accent)">Aplicar</button></div></div>';
+  document.body.appendChild(ov);
+  ov.querySelectorAll('.modstabs button').forEach(b=>b.onclick=()=>{ modsCtx.aba = b.dataset.aba; renderMods(); });
+  document.getElementById('modsFiltro').oninput = renderMods;
+  document.getElementById('modsCancel').onclick = ()=>{ ov.style.display='none'; modsCtx = null; };
+  document.getElementById('modsOk').onclick = ()=>{
+    const c = modsCtx; if(!c) return;
+    const novo = c.sel.slice();
+    const avs = novo.filter(m=>m.t==='m' && m.a).length + avancadasUsadas(c.chave);
+    const lim = Math.max(0, nivelAcessoNum()-2);
+    const avisos = [];
+    if(c.avancadasContam && avs>lim) avisos.push('Modificações Avançadas: você tem '+avs+' e o seu Nível de Acesso permite '+lim+'.');
+    if(novo.some(m=>m.t==='c') && nivelAcessoNum()<3) avisos.push('Itens amaldiçoados exigem Nível de Acesso 3 (Qualificado).');
+    if(c.avancadasContam && novo.some(m=>m.t==='d') && itensComDefeito(c.chave)>0) avisos.push('Cada personagem só pode ter 1 item com defeito.');
+    ov.style.display='none'; modsCtx = null;
+    c.onApply(novo);
+    if(avisos.length) aviso(avisos.join(' '));
+  };
+}
+function chaveMod(m){ return m.t+'|'+m.s+'|'+m.n; }
+function renderMods(){
+  const c = modsCtx; if(!c) return;
+  const ov = document.getElementById('modsOverlay');
+  ov.querySelectorAll('.modstabs button').forEach(b=>{
+    const ok = b.dataset.aba==='m' || (b.dataset.aba==='c' && c.cls.curses.length) || (b.dataset.aba==='d' && c.cls.defs.length && !c.cls.pesada);
+    b.style.display = ok ? '' : 'none'; b.classList.toggle('on', b.dataset.aba===c.aba);
+  });
+  const lista = document.getElementById('modsLista'); lista.innerHTML = '';
+  const filtro = normNome(document.getElementById('modsFiltro').value);
+  const fonte = c.aba==='m' ? MODDATA.mods.filter(x=>c.cls.mods.indexOf(x.s)>=0) : c.aba==='c' ? MODDATA.curses.filter(x=>c.cls.curses.indexOf(x.s)>=0) : MODDATA.defs.filter(x=>c.cls.defs.indexOf(x.s)>=0);
+  let ultimaSec = '';
+  fonte.forEach(e=>{
+    if(filtro && normNome(e.n).indexOf(filtro)<0) return;
+    const ref = {t:c.aba, s:e.s, n:e.n};
+    const sel = c.sel.find(m=>chaveMod(m)===chaveMod(ref));
+    if(c.aba!=='c' && e.s!==ultimaSec){ ultimaSec = e.s; const h = document.createElement('div'); h.className='modssec'; h.textContent = MOD_SEC_NOME[e.s]; lista.appendChild(h); }
+    const card = document.createElement('div'); card.className='modscard'+(sel?' on':'');
+    const top = document.createElement('label'); top.className='modstop';
+    const cb = document.createElement('input'); cb.type='checkbox'; cb.checked = !!sel;
+    const nm = document.createElement('b'); nm.textContent = e.n;
+    top.appendChild(cb); top.appendChild(nm);
+    if(c.aba==='c'){ const el = document.createElement('span'); el.className='modsel'; el.textContent = EL_NOME[e.e]||''; top.appendChild(el); }
+    if(c.aba==='m' && e.a){
+      const av = document.createElement('span'); av.className='modsav';
+      const cbA = document.createElement('input'); cbA.type='checkbox'; cbA.checked = !!(sel && sel.a); cbA.disabled = !sel;
+      av.appendChild(cbA); av.appendChild(document.createTextNode(' Avançada'));
+      av.onclick = ev=>ev.stopPropagation();
+      cbA.onchange = ()=>{ const s2 = c.sel.find(m=>chaveMod(m)===chaveMod(ref)); if(s2){ s2.a = cbA.checked?1:0; renderMods(); } };
+      top.appendChild(av);
+    }
+    cb.onchange = ()=>{
+      if(cb.checked){
+        if(c.aba==='d' && c.sel.filter(m=>m.t==='d').length>=MAX_DEFEITOS_ITEM){ aviso('Um item pode ter no máximo '+MAX_DEFEITOS_ITEM+' defeitos.'); cb.checked=false; return; }
+        c.sel.push(c.aba==='m' ? {t:'m',s:e.s,n:e.n,a:0} : {t:c.aba,s:e.s,n:e.n});
+      } else c.sel = c.sel.filter(m=>chaveMod(m)!==chaveMod(ref));
+      renderMods();
+    };
+    const tx = document.createElement('div'); tx.className='modstx'; tx.textContent = e.t;
+    card.appendChild(top); card.appendChild(tx);
+    if(c.aba==='d' && e.cp){ const cp = document.createElement('div'); cp.className='modscp'; cp.textContent = 'Contraparte: '+e.cp; card.appendChild(cp); }
+    if(c.aba==='m' && e.a){ const ta = document.createElement('div'); ta.className='modstx modsta'+(sel&&sel.a?' on':''); ta.textContent = 'Avançada: '+e.a; card.appendChild(ta); }
+    lista.appendChild(card);
+  });
+  if(!lista.children.length) lista.innerHTML = '<div class="modstx">Nada encontrado.</div>';
+  const ef = efeitosMods(c.sel, c.baseCat, c.baseCarga);
+  const parts = [];
+  if(c.sel.length){
+    if(c.baseCat!==null && c.baseCat!==undefined){ const cf = clampCat(c.baseCat+ef.c);
+    parts.push('Categoria: '+CAT_ROMANO[c.baseCat]+' → '+CAT_ROMANO[cf]+(c.baseCat+ef.c>4?' (limite IV)':'')); }
+    if(c.baseCarga!==null && c.baseCarga!==undefined && ef.k) parts.push('Carga: '+c.baseCarga+' → '+Math.max(0,c.baseCarga+ef.k));
+    if(c.baseDano!==null && c.baseDano!==undefined && ef.d) parts.push('Dano: '+c.baseDano+' → '+aplicaDano(c.baseDano, ef.d));
+    if(ef.an.size) parts.push(ef.an.size/2+' par(es) defeito/modificação se anulam');
+  } else parts.push('Nada selecionado.');
+  document.getElementById('modsResumo').textContent = parts.join(' · ');
+}
+// ctx: {titulo, sub, cls, mods, baseCat, baseCarga, baseDano, chave, avancadasContam, onApply}
+function abrirMods(ctx){
+  criaModsOverlay();
+  modsCtx = Object.assign({}, ctx, {sel:(ctx.mods||[]).map(m=>Object.assign({},m)), aba:'m'});
+  document.getElementById('modsTitle').textContent = ctx.titulo||'Modificações';
+  document.getElementById('modsCtx').textContent = ctx.sub||'';
+  document.getElementById('modsFiltro').value = '';
+  document.getElementById('modsOverlay').style.display = 'flex';
+  renderMods();
+}
+
 function addEquipRow(containerEl, storeKey, data, opts){
   opts = opts || {};
   data = data || {nome:'',cat:'',carga:'',notas:''};
@@ -949,6 +1272,31 @@ function addEquipRow(containerEl, storeKey, data, opts){
   const carga = document.createElement('input'); carga.type='number'; carga.className='carga'; carga.min=0; carga.placeholder='Carga'; carga.value = data.carga||'';
   const btnNotas = document.createElement('button'); btnNotas.type='button'; btnNotas.textContent='Notas';
   const btnDel = document.createElement('button'); btnDel.type='button'; btnDel.textContent='×'; btnDel.title='remover';
+  // modificações / maldições / defeitos
+  let mods = Array.isArray(data.mods) ? data.mods.slice() : [];
+  let catBase = (data.catBase===undefined||data.catBase===null) ? null : Number(data.catBase);
+  let cargaBase = (data.cargaBase===undefined||data.cargaBase===null) ? null : Number(data.cargaBase);
+  const btnMods = document.createElement('button'); btnMods.type='button'; btnMods.className='btnmods noprint'; btnMods.title='modificações, maldições e defeitos';
+  const catNum = ()=>{ const i = CAT_ROMANO.indexOf(cat.value); return i<0 ? 0 : i; };
+  const itemAtual = ()=> ITENS.find(x=>x.g===gSel.value && x.n===iSel.value) || null;
+  function atualizaBtnMods(){
+    const cl = itemClasse(gSel.value, itemAtual());
+    btnMods.style.display = cl ? '' : 'none';
+    btnMods.textContent = 'Mods'+(mods.length ? ' ('+mods.length+')' : '');
+    btnMods.classList.toggle('tem', mods.length>0);
+  }
+  function aplicaMods(novo){
+    if(!mods.length){ catBase = catNum(); cargaBase = Number(carga.value)||0; }
+    mods = novo;
+    if(!mods.length){
+      cat.value = CAT_ROMANO[clampCat(catBase)]; carga.value = cargaBase; catBase = null; cargaBase = null;
+    } else {
+      const e = efeitosMods(mods, catBase, cargaBase);
+      cat.value = CAT_ROMANO[clampCat(catBase+e.c)]; carga.value = Math.max(0, cargaBase+e.k);
+    }
+    setNotasMods(storeKey+'__notas', mods);
+    persist(); atualizaBtnMods();
+  }
   function clampCarga(){
     let v = Number(carga.value)||0;
     if(v<0){ carga.value = 0; v = 0; }
@@ -965,11 +1313,12 @@ function addEquipRow(containerEl, storeKey, data, opts){
   function persist(){
     clampCarga();
     const o = {nome:nome.value, cat:cat.value, carga:carga.value, g:gSel.value, it:iSel.value};
+    if(mods.length){ o.mods = mods; o.catBase = catBase; o.cargaBase = cargaBase; }
     if(temPacote()){ o.tiros = Number(stPk.tiros)||0; o.tmax = Number(stPk.tmax)||0; }
     store[storeKey] = o; recalcAll();
   }
   packReg[storeKey] = {setTiros:v=>{ stPk.tiros = Math.max(0,v); persist(); packUI.sync(); }};
-  gSel.onchange = ()=>{ preencherItens(); prevIt = ''; mostrarPacote(); persist(); };
+  gSel.onchange = ()=>{ if(mods.length) aplicaMods([]); preencherItens(); prevIt = ''; mostrarPacote(); persist(); atualizaBtnMods(); };
   iSel.onchange = ()=>{
     const it = ITENS.find(x=>x.g===gSel.value && x.n===iSel.value);
     if(!it){ prevIt = ''; persist(); return; }
@@ -980,21 +1329,33 @@ function addEquipRow(containerEl, storeKey, data, opts){
         iSel.value = prevIt; return;
       }
     }
-    const notaAtual = store[storeKey+'__notas']||'';
+    const notaAtual = stripMods(store[storeKey+'__notas']||'');
+    if(mods.length && !confirm('Trocar o item remove as modificações, maldições e defeitos aplicados. Continuar?')){ iSel.value = prevIt; return; }
     if(notaAtual && !ehNotaItemAuto(notaAtual) && !confirm('Substituir as notas que você escreveu pelas de "'+it.n+'"?')){ iSel.value = prevIt; return; }
+    mods = []; catBase = null; cargaBase = null;
     nome.value = it.n; cat.value = CAT_ROMANO[it.c]; carga.value = it.k;
     store[storeKey+'__notas'] = notasDe(it);
     prevIt = it.n;
     if(it.g==='Munição' && PACOTE_TIROS[it.n]){ stPk.tmax = PACOTE_TIROS[it.n]; stPk.tiros = stPk.tmax; }
     mostrarPacote();
-    persist(); avisoProf(it);
+    persist(); avisoProf(it); atualizaBtnMods();
   };
-  nome.oninput = persist; cat.onchange = persist; carga.oninput = persist;
+  nome.oninput = persist;
+  cat.onchange = ()=>{ if(mods.length){ catBase = catNum() - efeitosMods(mods, catBase, cargaBase).c; } persist(); };
+  carga.oninput = ()=>{ if(mods.length){ cargaBase = (Number(carga.value)||0) - efeitosMods(mods, catBase, cargaBase).k; } persist(); };
+  btnMods.onclick = ()=>{
+    const it = itemAtual(), cl = itemClasse(gSel.value, it); if(!cl) return;
+    abrirMods({titulo:'Modificações — '+(nome.value||it&&it.n||'Item'), sub:gSel.value+(it?' · '+it.n:'')+' · cada modificação +1 categoria, maldição +2, defeito −1', cls:cl, mods:mods,
+      baseCat: mods.length ? catBase : catNum(), baseCarga: mods.length ? cargaBase : (Number(carga.value)||0), baseDano: it && it.d ? it.d : null,
+      chave:storeKey, avancadasContam:true, onApply:aplicaMods});
+  };
   btnNotas.onclick = ()=> openModal(storeKey+'__notas', (nome.value||'Item')+' — Notas');
   btnDel.onclick = ()=>{ row.remove(); delete packReg[storeKey]; delete store[storeKey]; delete store[storeKey+'__notas']; recalcAll(); };
-  row.appendChild(pick); row.appendChild(nome); row.appendChild(cat); row.appendChild(carga); row.appendChild(btnNotas); row.appendChild(btnDel); row.appendChild(packUI);
+  row.appendChild(pick); row.appendChild(nome); row.appendChild(cat); row.appendChild(carga); row.appendChild(btnMods); row.appendChild(btnNotas); row.appendChild(btnDel); row.appendChild(packUI);
   containerEl.appendChild(row);
   store[storeKey] = {nome:data.nome||'', cat:data.cat||'', carga:data.carga||'', g:data.g||'', it:data.it||''};
+  if(mods.length){ store[storeKey].mods = mods; store[storeKey].catBase = catBase; store[storeKey].cargaBase = cargaBase; }
+  atualizaBtnMods();
   if(temPacote()){ store[storeKey].tiros = Number(stPk.tiros)||0; store[storeKey].tmax = Number(stPk.tmax)||0; }
   mostrarPacote();
   if(data.notas) store[storeKey+'__notas'] = data.notas;
@@ -1616,13 +1977,28 @@ function addAtaque(data){
   });
   const pickA = document.createElement('div'); pickA.className='eqpick noprint'; pickA.appendChild(catSelA);
   const st = {on:!!data.on, cap:Number(data.cap)||0, mun:Number(data.mun)||0, pk:data.pk||''};
+  let mods = Array.isArray(data.mods) ? data.mods.slice() : [];
+  let danoBase = (data.danoBase===undefined||data.danoBase===null) ? null : String(data.danoBase);
+  const stG = {g:data.g||'', it:data.it||''};
   const dano = document.createElement('input'); dano.type='text'; dano.style.flex='0 0 110px'; dano.placeholder='12+RB'; dano.value = data.dano||'';
   const tipo = document.createElement('input'); tipo.type='text'; tipo.style.flex='0 0 90px'; tipo.placeholder='Tipo'; tipo.value = data.tipo||'';
   const btnRoll = document.createElement('button'); btnRoll.type='button'; btnRoll.textContent='Rolar';
   const btnNotas = document.createElement('button'); btnNotas.type='button'; btnNotas.textContent='Notas';
+  const btnMods = document.createElement('button'); btnMods.type='button'; btnMods.className='btnmods noprint'; btnMods.title='modificações, maldições e defeitos';
   const btnMun = document.createElement('button'); btnMun.type='button'; btnMun.textContent='Munição'; btnMun.className='noprint'; btnMun.style.flex='0 0 auto'; btnMun.style.padding='4px 8px'; btnMun.title='mostrar ou esconder o contador de munição';
   const btnDel = document.createElement('button'); btnDel.type='button'; btnDel.textContent='×'; btnDel.title='remover';
-  function persist(){ store[id] = {nome:nome.value, dano:dano.value, tipo:tipo.value, on:st.on, cap:st.cap, mun:st.mun, pk:st.pk}; save(); }
+  const itemAtk = ()=> ITENS.find(x=>x.g===stG.g && x.n===stG.it) || null;
+  const clsAtk = ()=> itemClasse(stG.g, itemAtk()) || {mods:['arma','fogo'], curses:['arma'], defs:['arma','fogo'], pesada:false};
+  function atualizaBtnMods(){ btnMods.textContent = 'Mods'+(mods.length ? ' ('+mods.length+')' : ''); btnMods.classList.toggle('tem', mods.length>0); }
+  function aplicaModsAtk(novo){
+    if(!mods.length) danoBase = dano.value;
+    mods = novo;
+    if(!mods.length){ dano.value = danoBase; danoBase = null; }
+    else dano.value = aplicaDano(danoBase, efeitosMods(mods,0,0).d);
+    setNotasMods(id+'__notas', mods);
+    persist(); atualizaBtnMods();
+  }
+  function persist(){ store[id] = {nome:nome.value, dano:dano.value, tipo:tipo.value, on:st.on, cap:st.cap, mun:st.mun, pk:st.pk}; if(stG.g){ store[id].g = stG.g; store[id].it = stG.it; } if(mods.length){ store[id].mods = mods; store[id].danoBase = danoBase; } save(); }
   // ---- linha de munição ----
   const mbox = document.createElement('div'); mbox.className='munbox';
   const mlab = document.createElement('span'); mlab.className='mlab'; mlab.textContent='Munição';
@@ -1674,13 +2050,21 @@ function addAtaque(data){
     if(posto===0) aviso('Sem '+st.pk+' no inventário. Adicione um pacote (ou some tiros nele) para recarregar.');
     else if(falta>0) aviso('Os pacotes acabaram: recarregou '+posto+' tiro'+(posto===1?'':'s')+' e ainda faltam '+falta+' para encher a arma.');
   };
-  nome.oninput = persist; dano.oninput = persist; tipo.oninput = persist;
+  nome.oninput = persist; tipo.oninput = persist;
+  dano.oninput = ()=>{ if(mods.length) danoBase = danoBaseDe(dano.value, efeitosMods(mods,0,0).d); persist(); };
+  btnMods.onclick = ()=>{
+    const it = itemAtk();
+    abrirMods({titulo:'Modificações — '+(nome.value||'Ataque'), sub:(it ? it.g+' · '+it.n : 'Arma sem item do catálogo (todas as opções de armas)')+' · afeta o dano do ataque; categoria e carga ficam no item do inventário', cls:clsAtk(), mods:mods,
+      baseCat:null, baseCarga:null, baseDano: mods.length ? danoBase : dano.value, chave:id, avancadasContam:false, onApply:aplicaModsAtk});
+  };
   catSelA.onchange = ()=>{
     const v = catSelA.value; if(!v) return;
     const [g, n] = v.split('|');
     const it = ITENS.find(x=>x.g===g && x.n===n); if(!it) return;
-    const notaAtual = store[id+'__notas']||'';
+    const notaAtual = stripMods(store[id+'__notas']||'');
+    if(mods.length && !confirm('Trocar a arma remove as modificações, maldições e defeitos aplicados. Continuar?')){ catSelA.value=''; return; }
     if(notaAtual && !ehNotaItemAuto(notaAtual) && !confirm('Substituir as notas que você escreveu pelas de "'+it.n+'"?')){ catSelA.value=''; return; }
+    mods = []; danoBase = null; stG.g = it.g; stG.it = it.n; atualizaBtnMods();
     nome.value = it.n; dano.value = it.d; tipo.value = it.tp||'';
     store[id+'__notas'] = notasDe(it);
     const mi = munDoItem(it);
@@ -1696,7 +2080,7 @@ function addAtaque(data){
   };
   btnNotas.onclick = ()=> openModal(id+'__notas', (nome.value||'Ataque')+' — Notas (alcance, precisão, efeitos...)');
   btnDel.onclick = ()=>{ row.remove(); delete munRefresh[id]; delete store[id]; delete store[id+'__notas']; save(); };
-  row.appendChild(pickA); row.appendChild(nome); row.appendChild(dano); row.appendChild(tipo); row.appendChild(btnRoll); row.appendChild(btnMun); row.appendChild(btnNotas); row.appendChild(btnDel); row.appendChild(mbox);
+  row.appendChild(pickA); row.appendChild(nome); row.appendChild(dano); row.appendChild(tipo); row.appendChild(btnRoll); row.appendChild(btnMun); row.appendChild(btnMods); row.appendChild(btnNotas); row.appendChild(btnDel); row.appendChild(mbox); atualizaBtnMods();
   wrap.appendChild(row);
   store[id] = {nome:data.nome||'', dano:data.dano||'', tipo:data.tipo||'', on:st.on, cap:st.cap, mun:st.mun, pk:st.pk};
   msync();
